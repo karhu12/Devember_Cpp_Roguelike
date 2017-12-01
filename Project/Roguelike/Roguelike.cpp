@@ -4,13 +4,18 @@
 #include "stdafx.h"
 #include "curses.h"
 
-int main()
-{
-	initscr();                    /* Start curses mode */
-	printw("Hello World !!!");    /* Print Hello World */
-	refresh();                    /* Print it on to the real screen */
-	getch();                      /* Wait for user input */
-	endwin();                     /* End curses mode */
+int main() {
+	initscr();										 /* Initialize screenbuffer */
+	
+	if (has_colors) {								 /* If console has colors */
+		start_color();								 /* Initialize colors*/
+		init_pair(1, COLOR_BLACK, COLOR_BLACK);      /* Example of block with black text and bg */
+	}		
+	
+	resize_term(30, 70);							 /* Resizes screenbuffer size of 30 y 70 x */
 
+	refresh();
+	getch();
+	endwin();
 	return 0;
 }
