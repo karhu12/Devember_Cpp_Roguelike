@@ -3,28 +3,40 @@
 #include <string>
 #include <iostream>
 
-class _buffer {
+#define AREA_MAX_WIDTH 60
+#define AREA_MAX_HEIGHT 18
+
+class character {
+public:
+	short health;
+	int xPos, yPos;
+	void playerMovement(int *xPos, int *yPos, char input);
+};
+
+class _buffer{
 public:
 	WINDOW *statusWindow, *gameWindow, *textWindow;								/* Initialize 3 windows for status,text and game */	
 	void drawBorders(WINDOW * status, WINDOW * textBar);						/* draw borders */
 	void bufferRelease(WINDOW * first, WINDOW * second, WINDOW * third);		/* Release buffer memory */
-	void drawGame(WINDOW * game);												/* Draw game state */
-	void drawStatus(WINDOW * status);											/* Draw status window specific */
+	void drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], int xPos, int yPos);		/* Draw game state */
+	void drawStatus(WINDOW * status, int hp);											/* Draw status window specific */
 };
 
-class character {
+class tiles {
 public:
-	short health, xPos, yPos;
+		/* This will include the information about current tile */
 };
 
-class state: public _buffer {
+class state : public _buffer, public tiles {
 public:
 	bool status;
+	int map[AREA_MAX_HEIGHT][AREA_MAX_WIDTH];
 };
 
 int main() {
 	state game;										/* Initialize game state object */
 	character player;
+	char input;
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
 	resize_term(37, 91);							/* Set initial window size */
@@ -35,26 +47,51 @@ int main() {
 		init_pair(3, COLOR_RED, COLOR_RED);
 		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_RED, COLOR_BLACK);
+		init_pair(6, COLOR_CYAN, COLOR_GREEN);
 	}
 
 	game.status = true;
+	player.health = 10;
+	player.xPos = 10;
+	player.yPos = 10;
+	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
+		for (int j = 0; j < AREA_MAX_WIDTH; j++)
+			game.map[i][j] = 0;						/* Initialize map with no tile value (tiles not used yet) */
 
 	game.statusWindow = newwin(20, 20, 5, 0);
-	game.gameWindow = newwin(18, 60, 6, 23);
+	game.gameWindow = newwin(19, 61, 6, 23);
 	game.textWindow = newwin(5, 85, 0, 0);			/* Create game windows of approppriate size */
 
 	while (game.status == true) {
 		game.drawBorders(game.statusWindow, game.textWindow);
-		game.drawStatus(game.statusWindow);
-		game.drawGame(game.gameWindow);				/* Buffer draw functions */
+		game.drawStatus(game.statusWindow,player.health);
+		game.drawGame(game.gameWindow,game.map,player.xPos,player.yPos);				/* Buffer draw functions */
 
-		mvwprintw(game.textWindow, 1, 2, "Text log");
-		if (mvwgetch(game.textWindow, 3, 2) == 'q')
+		mvwprintw(game.textWindow, 1, 2, "player x: %d	player y: %d", player.xPos, player.yPos);
+		input = mvwgetch(game.textWindow, 3, 2);
+		if (input == 'q')
 			game.status = false;
+		else 
+			player.playerMovement(&player.xPos, &player.yPos,input);
 	}
 													/* Release window buffer memory */
 	game.bufferRelease(game.statusWindow, game.gameWindow, game.textWindow);
 	return 0;
+}
+
+void character::playerMovement(int *xPos, int *yPos, char input) {
+	if (input == 'd' || input == 'D')
+		if (*xPos < AREA_MAX_WIDTH)
+			*xPos += 1;
+	if (input == 'a' || input == 'A')
+		if (*xPos > 0)
+			*xPos -= 1;
+	if (input == 'w' || input == 'W')
+		if (*yPos > 0)
+			*yPos -= 1;
+	if (input == 's' || input == 'S')
+		if (*yPos < AREA_MAX_HEIGHT)
+			*yPos += 1;
 }
 
 void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
@@ -64,36 +101,29 @@ void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
 	wrefresh(text);									/* Refresh draws buffer to the actual screen */
 }
 
-void _buffer::drawGame(WINDOW * game) {
-	for (int i = 0; i < 18; i++) {					/* Example of game field drawn from 0,0 coordinate */
-		for (int j = 0; j < 60; j++) {
-			wattron(game, COLOR_PAIR(2));
-			wattron(game, A_BOLD);
-			mvwaddch(game, i, j, ' ');
-			wattroff(game, A_BOLD);
-			wattroff(game, COLOR_PAIR(2));
+void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], int xPos, int yPos) {
+	for (int i = 0; i < AREA_MAX_HEIGHT+1; i++) {					/* Example of game field drawn from 0,0 coordinate */
+		for (int j = 0; j < AREA_MAX_WIDTH+1; j++) {
+			if (i == yPos && j == xPos) {
+				wattron(game, A_BOLD);
+				wattron(game, COLOR_PAIR(6));
+				mvwaddch(game, i, j, '@');
+				wattroff(game, COLOR_PAIR(6));
+				wattroff(game, A_BOLD);
+			}
+			else {
+				wattron(game, A_BOLD);
+				wattron(game, COLOR_PAIR(2));
+				mvwaddch(game, i, j, '.');
+				wattroff(game, COLOR_PAIR(2));
+				wattroff(game, A_BOLD);
+			}
 		}
 	}
-	for (int i = 2; i < 7; i++)
-		for (int j = 2; j < 13; j++) {
-			wattron(game, COLOR_PAIR(2));
-			wattron(game, A_BOLD);
-			mvwaddch(game, i, j, ACS_UARROW);
-			wattroff(game, A_BOLD);
-			wattroff(game, COLOR_PAIR(2));
-		}
-	for (int i = 10; i < 15; i++)
-		for (int j = 2; j < 23; j++) {
-			wattron(game, COLOR_PAIR(1));
-			wattron(game, A_BOLD);
-			mvwaddch(game, i, j, '~');
-			wattroff(game, A_BOLD);
-			wattroff(game, COLOR_PAIR(1));
-		}
 	wrefresh(game);
 }
 
-void _buffer::drawStatus(WINDOW * status) {			/* Draw text on status bar (later on add actual variables) */
+void _buffer::drawStatus(WINDOW * status,int hp) {			/* Draw text on status bar (later on add actual variables) */
 	wattron(status, A_BOLD);
 	mvwprintw(status, 2, 2, "PLAYER");
 	wattroff(status, A_BOLD);
@@ -102,6 +132,10 @@ void _buffer::drawStatus(WINDOW * status) {			/* Draw text on status bar (later 
 	wattron(status, COLOR_PAIR(5));
 	mvwprintw(status, 4, 2, "HP");
 	wattroff(status, COLOR_PAIR(5));
+	wattroff(status, A_BOLD);
+
+	wattron(status, A_BOLD);
+	mvwprintw(status, 4, 6, "%d", hp);
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
