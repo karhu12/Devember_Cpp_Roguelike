@@ -8,44 +8,52 @@ public:
 	WINDOW *statusWindow, *gameWindow, *textWindow;								/* Initialize 3 windows for status,text and game */	
 	void drawBorders(WINDOW * status, WINDOW * textBar);						/* draw borders */
 	void bufferRelease(WINDOW * first, WINDOW * second, WINDOW * third);		/* Release buffer memory */
+	void drawGame(WINDOW * game);												/* Draw game state */
 	void drawStatus(WINDOW * status);											/* Draw status window specific */
 };
 
+class character {
+public:
+	short health, xPos, yPos;
+};
+
+class state: public _buffer {
+public:
+	bool status;
+};
+
 int main() {
-	_buffer buffer;									/* Initialize buffer object */
+	state game;										/* Initialize game state object */
+	character player;
 	initscr();										/* Start curses */
-	curs_set(1);
+	curs_set(0);									/* Hide cursor */
+	resize_term(37, 91);							/* Set initial window size */
 	if (has_colors() == TRUE) {						/* Initialize basic colors */
 		start_color();
-		init_pair(1, COLOR_CYAN, COLOR_BLACK);
-		init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
-		init_pair(3, COLOR_BLUE, COLOR_BLACK);
-		init_pair(4, COLOR_GREEN, COLOR_BLACK);
+		init_pair(1, COLOR_BLUE, COLOR_BLUE);		/* First color character color and second for background */
+		init_pair(2, COLOR_GREEN, COLOR_GREEN);
+		init_pair(3, COLOR_RED, COLOR_RED);
+		init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 		init_pair(5, COLOR_RED, COLOR_BLACK);
-		init_pair(6, COLOR_YELLOW, COLOR_BLACK);
-		init_pair(7, COLOR_WHITE, COLOR_BLACK);
 	}
-	resize_term(37, 91);							/* Set initial window size */
-	buffer.statusWindow = newwin(20, 20, 5, 0);
-	buffer.gameWindow = newwin(18, 60, 6, 23);
-	buffer.textWindow = newwin(5, 85, 0, 0);		/* Create game windows of approppriate size */
 
-	buffer.drawBorders(buffer.statusWindow, buffer.textWindow);
-	buffer.drawStatus(buffer.statusWindow);			/* Buffer draw functions */
+	game.status = true;
 
-	for (int i = 0; i < 18; i++) {					/* Example of game field drawn from 0,0 coordinate */
-		for (int j = 0; j < 60; j++) {
-			wattron(buffer.gameWindow, COLOR_PAIR(4));
-			mvwaddch(buffer.gameWindow, i, j, ACS_CKBOARD);
-			wattroff(buffer.gameWindow, COLOR_PAIR(4));
-		}
+	game.statusWindow = newwin(20, 20, 5, 0);
+	game.gameWindow = newwin(18, 60, 6, 23);
+	game.textWindow = newwin(5, 85, 0, 0);			/* Create game windows of approppriate size */
+
+	while (game.status == true) {
+		game.drawBorders(game.statusWindow, game.textWindow);
+		game.drawStatus(game.statusWindow);
+		game.drawGame(game.gameWindow);				/* Buffer draw functions */
+
+		mvwprintw(game.textWindow, 1, 2, "Text log");
+		if (mvwgetch(game.textWindow, 3, 2) == 'q')
+			game.status = false;
 	}
-	wrefresh(buffer.gameWindow);
-	mvwprintw(buffer.textWindow, 1, 2, "Press any key to quit...");
-	mvwgetch(buffer.textWindow, 3, 1);
-		
 													/* Release window buffer memory */
-	buffer.bufferRelease(buffer.statusWindow, buffer.gameWindow, buffer.textWindow);
+	game.bufferRelease(game.statusWindow, game.gameWindow, game.textWindow);
 	return 0;
 }
 
@@ -54,6 +62,35 @@ void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
 	box(text, ACS_VLINE, ACS_HLINE);				/* draw borders to window buffers */
 	wrefresh(status);
 	wrefresh(text);									/* Refresh draws buffer to the actual screen */
+}
+
+void _buffer::drawGame(WINDOW * game) {
+	for (int i = 0; i < 18; i++) {					/* Example of game field drawn from 0,0 coordinate */
+		for (int j = 0; j < 60; j++) {
+			wattron(game, COLOR_PAIR(2));
+			wattron(game, A_BOLD);
+			mvwaddch(game, i, j, ' ');
+			wattroff(game, A_BOLD);
+			wattroff(game, COLOR_PAIR(2));
+		}
+	}
+	for (int i = 2; i < 7; i++)
+		for (int j = 2; j < 13; j++) {
+			wattron(game, COLOR_PAIR(2));
+			wattron(game, A_BOLD);
+			mvwaddch(game, i, j, ACS_UARROW);
+			wattroff(game, A_BOLD);
+			wattroff(game, COLOR_PAIR(2));
+		}
+	for (int i = 10; i < 15; i++)
+		for (int j = 2; j < 23; j++) {
+			wattron(game, COLOR_PAIR(1));
+			wattron(game, A_BOLD);
+			mvwaddch(game, i, j, '~');
+			wattroff(game, A_BOLD);
+			wattroff(game, COLOR_PAIR(1));
+		}
+	wrefresh(game);
 }
 
 void _buffer::drawStatus(WINDOW * status) {			/* Draw text on status bar (later on add actual variables) */
@@ -68,10 +105,10 @@ void _buffer::drawStatus(WINDOW * status) {			/* Draw text on status bar (later 
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(6));
+	wattron(status, COLOR_PAIR(4));
 	mvwprintw(status, 5, 2, "LEVEL");
 	mvwprintw(status, 6, 2, "EXP");
-	wattroff(status, COLOR_PAIR(6));
+	wattroff(status, COLOR_PAIR(4));
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
@@ -79,21 +116,21 @@ void _buffer::drawStatus(WINDOW * status) {			/* Draw text on status bar (later 
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(5));
-	mvwprintw(status, 10, 2, "STR");
-	wattroff(status, COLOR_PAIR(5));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(4));
-	mvwprintw(status, 11, 2, "DEX");
-	wattroff(status, COLOR_PAIR(4));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
 	wattron(status, COLOR_PAIR(3));
-	mvwprintw(status, 12, 2, "INT");
+	mvwprintw(status, 10, 2, "STR");
 	wattroff(status, COLOR_PAIR(3));
+	wattroff(status, A_BOLD);
+
+	wattron(status, A_BOLD);
+	wattron(status, COLOR_PAIR(2));
+	mvwprintw(status, 11, 2, "DEX");
+	wattroff(status, COLOR_PAIR(2));
+	wattroff(status, A_BOLD);
+
+	wattron(status, A_BOLD);
+	wattron(status, COLOR_PAIR(1));
+	mvwprintw(status, 12, 2, "INT");
+	wattroff(status, COLOR_PAIR(1));
 	wattroff(status, A_BOLD);
 	
 	wrefresh(status);							
