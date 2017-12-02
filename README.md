@@ -21,3 +21,11 @@ This day was spent mostly on getting started. We were checking out a few librari
 Initially i got PDCurses library working even before this project started but we wanted to try out other librarys with more functionality.
 We tried to get libtcod working on windows but it ended up wasting many hours of our time and we decided to just keep on using PDCurses.
 Rest of the night i just researched what kind of functions does PDcurse have and tried some of them out.
+
+2.12.2017
+---------
+This day got a little bit more productive. 
+I started to get some foundation for functions and classes done. I improved the UI to actually look like game.
+I created test player with some really simple movement and tried drawing game window with it successfully.
+I need to implement better functions to do some repeating stuff.
+I learned how to split classes and functions into headers and other source files.
