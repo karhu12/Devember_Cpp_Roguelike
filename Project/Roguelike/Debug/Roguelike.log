@@ -1,3 +1,5 @@
-﻿  Roguelike.cpp
+﻿  stdafx.cpp
+  Roguelike.cpp
+d:\työpöytä\git\devember\project\roguelike\roguelike.cpp(30): warning C4091: 'typedef ': ignored on left of 'state::tiles' when no variable is declared
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

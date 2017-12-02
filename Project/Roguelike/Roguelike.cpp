@@ -1,41 +1,38 @@
 ﻿#include "stdafx.h"
-#include "curses.h"
-#include <string>
-#include <iostream>
 
-#define AREA_MAX_WIDTH 60
-#define AREA_MAX_HEIGHT 18
+class state;
 
 class character {
 public:
-	short health;
+	short health, level, experience;
 	int xPos, yPos;
-	void playerMovement(int *xPos, int *yPos, char input);
+	void playerMovement(character *ptr, char input);
+	character createPlayer();
 };
 
 class _buffer{
 public:
-	WINDOW *statusWindow, *gameWindow, *textWindow;								/* Initialize 3 windows for status,text and game */	
-	void drawBorders(WINDOW * status, WINDOW * textBar);						/* draw borders */
-	void bufferRelease(WINDOW * first, WINDOW * second, WINDOW * third);		/* Release buffer memory */
-	void drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], int xPos, int yPos);		/* Draw game state */
-	void drawStatus(WINDOW * status, int hp);											/* Draw status window specific */
+	WINDOW *statusWindow, *gameWindow, *textWindow;										/* Initialize 3 windows for status,text and game */	
+	void drawBorders(WINDOW * status, WINDOW * textBar);								/* draw borders */
+	void bufferRelease(state *game);													/* Release buffer memory */
+	void drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], character *player);			/* Draw game state */
+	void drawStatus(WINDOW * status, character * player);								/* Draw status window specific */
 };
 
-class tiles {
-public:
-		/* This will include the information about current tile */
-};
 
-class state : public _buffer, public tiles {
+class state : public _buffer {
 public:
 	bool status;
 	int map[AREA_MAX_HEIGHT][AREA_MAX_WIDTH];
+	void bufferCreate(state *game);
+	typedef struct tiles {
+
+	};
 };
 
 int main() {
 	state game;										/* Initialize game state object */
-	character player;
+	character player = player.createPlayer();
 	char input;
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
@@ -51,47 +48,59 @@ int main() {
 	}
 
 	game.status = true;
-	player.health = 10;
-	player.xPos = 10;
-	player.yPos = 10;
+
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
 		for (int j = 0; j < AREA_MAX_WIDTH; j++)
 			game.map[i][j] = 0;						/* Initialize map with no tile value (tiles not used yet) */
 
-	game.statusWindow = newwin(20, 20, 5, 0);
-	game.gameWindow = newwin(19, 61, 6, 23);
-	game.textWindow = newwin(5, 85, 0, 0);			/* Create game windows of approppriate size */
+	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 
 	while (game.status == true) {
 		game.drawBorders(game.statusWindow, game.textWindow);
-		game.drawStatus(game.statusWindow,player.health);
-		game.drawGame(game.gameWindow,game.map,player.xPos,player.yPos);				/* Buffer draw functions */
+		game.drawStatus(game.statusWindow, &player);
+		game.drawGame(game.gameWindow, game.map, &player);				/* Buffer draw functions */
 
 		mvwprintw(game.textWindow, 1, 2, "player x: %d	player y: %d", player.xPos, player.yPos);
 		input = mvwgetch(game.textWindow, 3, 2);
 		if (input == 'q')
 			game.status = false;
 		else 
-			player.playerMovement(&player.xPos, &player.yPos,input);
+			player.playerMovement(&player,input);
 	}
 													/* Release window buffer memory */
-	game.bufferRelease(game.statusWindow, game.gameWindow, game.textWindow);
+	game.bufferRelease(&game);
 	return 0;
 }
 
-void character::playerMovement(int *xPos, int *yPos, char input) {
+character character::createPlayer() {
+	character player;
+	player.level = 1;
+	player.health = 100;
+	player.experience = 0;
+	player.xPos = 30;
+	player.yPos = 9;
+	return player;
+}
+
+void character::playerMovement(character *ptr,char input) {
 	if (input == 'd' || input == 'D')
-		if (*xPos < AREA_MAX_WIDTH)
-			*xPos += 1;
+		if (ptr->xPos < AREA_MAX_WIDTH)
+			ptr->xPos += 1;
 	if (input == 'a' || input == 'A')
-		if (*xPos > 0)
-			*xPos -= 1;
+		if (ptr->xPos > 0)
+			ptr->xPos -= 1;
 	if (input == 'w' || input == 'W')
-		if (*yPos > 0)
-			*yPos -= 1;
+		if (ptr->yPos > 0)
+			ptr->yPos -= 1;
 	if (input == 's' || input == 'S')
-		if (*yPos < AREA_MAX_HEIGHT)
-			*yPos += 1;
+		if (ptr->yPos < AREA_MAX_HEIGHT)
+			ptr->yPos += 1;
+}
+
+void state::bufferCreate(state *game) {
+	game->statusWindow = newwin(20, 20, 5, 0);
+	game->gameWindow = newwin(19, 61, 6, 23);
+	game->textWindow = newwin(5, 85, 0, 0);
 }
 
 void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
@@ -101,10 +110,10 @@ void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
 	wrefresh(text);									/* Refresh draws buffer to the actual screen */
 }
 
-void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], int xPos, int yPos) {
+void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], character *player) {
 	for (int i = 0; i < AREA_MAX_HEIGHT+1; i++) {					/* Example of game field drawn from 0,0 coordinate */
 		for (int j = 0; j < AREA_MAX_WIDTH+1; j++) {
-			if (i == yPos && j == xPos) {
+			if (i == player->yPos && j == player->xPos) {
 				wattron(game, A_BOLD);
 				wattron(game, COLOR_PAIR(6));
 				mvwaddch(game, i, j, '@');
@@ -123,7 +132,7 @@ void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], int xPos, int y
 	wrefresh(game);
 }
 
-void _buffer::drawStatus(WINDOW * status,int hp) {			/* Draw text on status bar (later on add actual variables) */
+void _buffer::drawStatus(WINDOW * status, character * player) {			/* Draw text on status bar (later on add actual variables) */
 	wattron(status, A_BOLD);
 	mvwprintw(status, 2, 2, "PLAYER");
 	wattroff(status, A_BOLD);
@@ -135,7 +144,7 @@ void _buffer::drawStatus(WINDOW * status,int hp) {			/* Draw text on status bar 
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
-	mvwprintw(status, 4, 6, "%d", hp);
+	mvwprintw(status, 4, 10, "%d", player->health);
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
@@ -143,6 +152,11 @@ void _buffer::drawStatus(WINDOW * status,int hp) {			/* Draw text on status bar 
 	mvwprintw(status, 5, 2, "LEVEL");
 	mvwprintw(status, 6, 2, "EXP");
 	wattroff(status, COLOR_PAIR(4));
+	wattroff(status, A_BOLD);
+
+	wattron(status, A_BOLD);
+	mvwprintw(status, 5, 10, "%d", player->level);
+	mvwprintw(status, 6, 10, "%d", player->experience);
 	wattroff(status, A_BOLD);
 
 	wattron(status, A_BOLD);
@@ -170,9 +184,9 @@ void _buffer::drawStatus(WINDOW * status,int hp) {			/* Draw text on status bar 
 	wrefresh(status);							
 }
 
-void _buffer::bufferRelease(WINDOW * first, WINDOW * second, WINDOW * third) {
-	delwin(first);
-	delwin(second);
-	delwin(third);
+void _buffer::bufferRelease(state *game) {
+	delwin(game->statusWindow);
+	delwin(game->gameWindow);
+	delwin(game->textWindow);
 	endwin();									/* free every windows buffer memory */
 }
