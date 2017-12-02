@@ -7,4 +7,3 @@ public:
 	void playerMovement(character *ptr, char input);
 	character createPlayer();
 };
-

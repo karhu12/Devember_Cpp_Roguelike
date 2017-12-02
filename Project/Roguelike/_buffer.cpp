@@ -9,7 +9,7 @@ void _buffer::drawBorders(WINDOW * status, WINDOW * text) {
 }
 
 void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], character *player) {
-	for (int i = 0; i < AREA_MAX_HEIGHT + 1; i++) {					/* Example of game field drawn from 0,0 coordinate */
+	for (int i = 0; i < AREA_MAX_HEIGHT + 1; i++) {					
 		for (int j = 0; j < AREA_MAX_WIDTH + 1; j++) {
 			if (i == player->yPos && j == player->xPos) {
 				wattron(game, A_BOLD);
@@ -27,7 +27,7 @@ void _buffer::drawGame(WINDOW * game, int map[][AREA_MAX_WIDTH], character *play
 			}
 		}
 	}
-	wrefresh(game);
+	wrefresh(game);									/* Example of game field drawn from 0,0 coordinate */
 }
 
 void _buffer::drawStatus(WINDOW * status, character * player) {			/* Draw text on status bar (later on add actual variables) */
@@ -80,11 +80,4 @@ void _buffer::drawStatus(WINDOW * status, character * player) {			/* Draw text o
 	wattroff(status, A_BOLD);
 
 	wrefresh(status);
-}
-
-void _buffer::bufferRelease(state *game) {
-	delwin(game->statusWindow);
-	delwin(game->gameWindow);
-	delwin(game->textWindow);
-	endwin();									/* free every windows buffer memory */
 }

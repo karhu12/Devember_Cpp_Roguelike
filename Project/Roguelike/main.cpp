@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "character.h"
 #include "state.h"
-#include "_buffer.h"
 
 
 int main() {
