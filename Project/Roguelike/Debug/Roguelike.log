@@ -1,4 +1,4 @@
 ﻿  Roguelike.cpp
-d:\työpöytä\git\devember\project\roguelike\roguelike.cpp(7): warning C4101: 'gameBox': unreferenced local variable
+d:\työpöytä\git\devember\project\roguelike\roguelike.cpp(16): warning C4551: function call missing argument list
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

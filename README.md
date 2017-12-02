@@ -11,3 +11,10 @@ I will also write a daily public devlog and will make the produced code publicly
 No matter what, I will keep my promise. 
 
 * We will try to create text based roguelike console game using C++
+
+1.12.2017
+---------
+This day was spent mostly on getting started. We were checking out a few libraries we could use in this project.
+Initially i got PDCurses library working even before this project started but we wanted to try out other librarys with more functionality.
+We tried to get libtcod working on windows but it ended up wasting many hours of our time and we decided to just keep on using PDCurses.
+Rest of the night i just researched what kind of functions does PDcurse have and tried some of them out.
