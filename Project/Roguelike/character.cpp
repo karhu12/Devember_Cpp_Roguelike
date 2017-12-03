@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "character.h"
+#include "structs.h"
+#include "Map.h"
 
 character character::createPlayer() {
 	character player;
@@ -11,17 +13,25 @@ character character::createPlayer() {
 	return player;
 }
 
-void character::playerMovement(character *ptr, char input) {
-	if (input == 'd' || input == 'D')
-		if (ptr->xPos < AREA_MAX_WIDTH)
-			ptr->xPos += 1;
-	if (input == 'a' || input == 'A')
-		if (ptr->xPos > 0)
-			ptr->xPos -= 1;
-	if (input == 'w' || input == 'W')
-		if (ptr->yPos > 0)
-			ptr->yPos -= 1;
-	if (input == 's' || input == 'S')
-		if (ptr->yPos < AREA_MAX_HEIGHT)
-			ptr->yPos += 1;
+void character::playerMovement(Map map, Tile tile[], char input) {
+	if (input == 'd' || input == 'D') {
+		if (this->xPos < AREA_MAX_WIDTH - 1)
+			if (tile[map.area[this->yPos][this->xPos + 1]].walkable == true)
+				this->xPos += 1;
+	}
+	if (input == 'a' || input == 'A') {
+		if (this->xPos > 0)
+			if (tile[map.area[this->yPos][this->xPos + -1]].walkable == true)
+				this->xPos -= 1;
+	}
+	if (input == 'w' || input == 'W') {
+		if (this->yPos > 0)
+			if (tile[map.area[this->yPos - 1][this->xPos]].walkable == true)
+				this->yPos -= 1;
+	}
+	if (input == 's' || input == 'S') {
+		if (this->yPos < AREA_MAX_HEIGHT - 1)
+			if (tile[map.area[this->yPos + 1][this->xPos]].walkable == true)
+				this->yPos += 1;
+	}
 }

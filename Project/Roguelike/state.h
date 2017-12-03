@@ -1,11 +1,10 @@
 #pragma once
 
-#include "_buffer.h"
+#include "Buffer.h"
 
-class state : public _buffer {
+class state : public Buffer {
 public:
 	bool status;										/* Game running state */
-	int map[AREA_MAX_HEIGHT][AREA_MAX_WIDTH];			/* Current map values */
 	void bufferCreate(state *game);						/* Create window buffers */
 	void bufferRelease(state *game);					/* Release buffer memory */
 };

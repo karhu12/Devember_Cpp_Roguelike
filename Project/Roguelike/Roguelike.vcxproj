@@ -151,8 +151,10 @@
     <ClInclude Include="character.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="structs.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="_buffer.h" />
+    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="character.cpp" />
@@ -164,7 +166,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="_buffer.cpp" />
+    <ClCompile Include="structs.cpp" />
+    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

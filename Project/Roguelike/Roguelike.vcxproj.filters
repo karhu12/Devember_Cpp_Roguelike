@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Classes">
       <UniqueIdentifier>{a5d31e64-3ddb-4889-9da2-a2fe4d0a79ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Functions">
+      <UniqueIdentifier>{db0a5039-ec15-46a4-a80b-b754fde64199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Functions">
+      <UniqueIdentifier>{940ef029-6c0b-4aa4-810c-1679ca83a1e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -36,7 +42,13 @@
     <ClInclude Include="state.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="_buffer.h">
+    <ClInclude Include="structs.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +65,13 @@
     <ClCompile Include="state.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="_buffer.cpp">
+    <ClCompile Include="structs.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>

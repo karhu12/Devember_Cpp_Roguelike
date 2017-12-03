@@ -1,11 +1,16 @@
 ﻿#include "stdafx.h"
 #include "character.h"
 #include "state.h"
-
+#include "Map.h"
+#include "structs.h"
 
 int main() {
 	state game;										/* Initialize game state object */
-	character player = player.createPlayer();
+	character player = character::createPlayer();	/* Create player object with certain parameters */
+	Map map;										/* Create map object */
+	Tile tile[MAX_TILES];
+	defineTiles(tile);								/* Create tile struct array with all known tile values */
+
 	char input;
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
@@ -24,21 +29,29 @@ int main() {
 
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
 		for (int j = 0; j < AREA_MAX_WIDTH; j++)
-			game.map[i][j] = 0;						/* Initialize map with no tile value (tiles not used yet) */
+			map.area[i][j] = 0;						/* Initialize map with grass values */
+
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 5; j++)
+			map.area[i][j] = 1;
+
+	for (int i = 0; i < 6; i++)
+		for (int j = 20; j < 55; j++)
+			map.area[i][j] = 2;						/* Testing tiles */
 
 	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 
 	while (game.status == true) {
 		game.drawBorders(game.statusWindow, game.textWindow);
 		game.drawStatus(game.statusWindow, &player);
-		game.drawGame(game.gameWindow, game.map, &player);				/* Buffer draw functions */
-
-		mvwprintw(game.textWindow, 1, 2, "player x: %d	player y: %d", player.xPos, player.yPos);
+		game.drawGame(game.gameWindow, map, tile, &player);				/* Buffer draw functions */
+		mvwprintw(game.textWindow, 1, 2, "X : %2d  Y : %2d", player.xPos, player.yPos);
 		input = mvwgetch(game.textWindow, 3, 2);
+
 		if (input == 'q')
 			game.status = false;
-		else 
-			player.playerMovement(&player,input);
+		else
+			player.playerMovement(map, tile, input);
 	}
 													/* Release window buffer memory */
 	game.bufferRelease(&game);
