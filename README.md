@@ -28,4 +28,12 @@ This day got a little bit more productive.
 I started to get some foundation for functions and classes done. I improved the UI to actually look like game.
 I created test player with some really simple movement and tried drawing game window with it successfully.
 I need to implement better functions to do some repeating stuff.
-I learned how to split classes and functions into headers and other source files.
+I learned how to split classes and functions into headers and other source files. 
+
+3.12.2017
+---------
+Today i was able to create different kind of game functionality which should be used later on the code.
+I created struct with games tileset. It includes tile names, types, colors and etc.
+I also created a function that is able to determine which color pairs to apply when drawing game screen.
+Also i divided the classes and functions yet more clearly to subfiles.
+In general really productive and teaching day! :)
