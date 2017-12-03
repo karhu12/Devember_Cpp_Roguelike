@@ -1,83 +1,62 @@
 #include "stdafx.h"
 #include "Buffer.h"
+#include "general.h"
 
 void Buffer::drawBorders(WINDOW * status, WINDOW * text) {
 	box(status, ACS_VLINE, ACS_HLINE);
-	box(text, ACS_VLINE, ACS_HLINE);				/* draw borders to window buffers */
+	box(text, ACS_VLINE, ACS_HLINE);							/* draw borders to window buffers */
 	wrefresh(status);
-	wrefresh(text);									/* Refresh draws buffer to the actual screen */
+	wrefresh(text);												/* Refresh draws buffer to the actual screen */
 }
 
 void Buffer::drawGame(WINDOW * game, Map map, Tile tile[], character *player) {
-	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {					
+	int x;
+	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {					/* Nestedloop to start from 0,0 and end at last coordinate*/
 		for (int j = 0; j < AREA_MAX_WIDTH; j++) {
-			if (i == player->yPos && j == player->xPos) {
+			if (i == player->yPos && j == player->xPos) {		/* If position is players position, draw player */
+				x = returnColorPair(player->foregroundColor, tile[map.area[i][j]].backgroundColor);
 				wattron(game, A_BOLD);
-				wattron(game, COLOR_PAIR(6));
-				mvwaddch(game, i, j, '@');
-				wattroff(game, COLOR_PAIR(6));
+				wattron(game, COLOR_PAIR(x));
+				mvwaddch(game, i, j, player->playerCharacter);
+				wattroff(game, COLOR_PAIR(x));
 				wattroff(game, A_BOLD);
 			}
-			else {
+			else {												/* Else draw tile */
+				x = returnColorPair(tile[map.area[i][j]].foregroundColor, tile[map.area[i][j]].backgroundColor);
 				wattron(game, A_BOLD);
-				wattron(game, COLOR_PAIR(tile[map.area[i][j]].colorPair));
+				wattron(game, COLOR_PAIR(x));
 				mvwaddch(game, i, j, tile[map.area[i][j]].tileCharacter);
-				wattroff(game, COLOR_PAIR(tile[map.area[i][j]].colorPair));
+				wattroff(game, COLOR_PAIR(x));
 				wattroff(game, A_BOLD);
 			}
 		}
 	}
-	wrefresh(game);									/* Example of game field drawn from 0,0 coordinate */
+	wrefresh(game);												/* Refresh buffer */
 }
 
-void Buffer::drawStatus(WINDOW * status, character * player) {			/* Draw text on status bar (later on add actual variables) */
+void Buffer::drawStatus(WINDOW * status, character * player) {	/* Draw player status */
 	wattron(status, A_BOLD);
 	mvwprintw(status, 2, 2, "PLAYER");
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(5));
+	wColorOn(status, COLOR_RED, COLOR_BLACK);
 	mvwprintw(status, 4, 2, "HP");
-	wattroff(status, COLOR_PAIR(5));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	mvwprintw(status, 4, 10, "%d", player->health);
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(4));
+	wColorOff(status, COLOR_RED, COLOR_BLACK);
+	wColorOn(status, COLOR_YELLOW, COLOR_BLACK);
 	mvwprintw(status, 5, 2, "LEVEL");
 	mvwprintw(status, 6, 2, "EXP");
-	wattroff(status, COLOR_PAIR(4));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
+	wColorOff(status, COLOR_YELLOW, COLOR_BLACK);
+	mvwprintw(status, 4, 10, "%d", player->health);
 	mvwprintw(status, 5, 10, "%d", player->level);
 	mvwprintw(status, 6, 10, "%d", player->experience);
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
 	mvwprintw(status, 8, 2, "ATTRIBUTES");
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(3));
+	wColorOn(status, COLOR_RED, COLOR_RED);
 	mvwprintw(status, 10, 2, "STR");
-	wattroff(status, COLOR_PAIR(3));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(2));
+	wColorOff(status, COLOR_RED, COLOR_RED);
+	wColorOn(status, COLOR_GREEN, COLOR_GREEN);
 	mvwprintw(status, 11, 2, "DEX");
-	wattroff(status, COLOR_PAIR(2));
-	wattroff(status, A_BOLD);
-
-	wattron(status, A_BOLD);
-	wattron(status, COLOR_PAIR(1));
+	wColorOff(status, COLOR_GREEN, COLOR_GREEN);
+	wColorOn(status, COLOR_BLUE, COLOR_BLUE);
 	mvwprintw(status, 12, 2, "INT");
-	wattroff(status, COLOR_PAIR(1));
+	wColorOff(status, COLOR_BLUE, COLOR_BLUE);
 	wattroff(status, A_BOLD);
-
 	wrefresh(status);
 }

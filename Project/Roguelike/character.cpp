@@ -1,15 +1,17 @@
 #include "stdafx.h"
 #include "character.h"
-#include "structs.h"
+#include "tiles.h"
 #include "Map.h"
 
-character character::createPlayer() {
+character character::createPlayer() {			/* Initializes the values of player object */
 	character player;
 	player.level = 1;
 	player.health = 100;
 	player.experience = 0;
 	player.xPos = 30;
 	player.yPos = 9;
+	player.playerCharacter = 'P';
+	player.foregroundColor = COLOR_CYAN;
 	return player;
 }
 

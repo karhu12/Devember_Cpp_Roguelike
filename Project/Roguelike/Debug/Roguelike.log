@@ -1,10 +1,3 @@
-﻿  Map.cpp
-  Buffer.cpp
-  main.cpp
-  character.cpp
-  Generating Code...
-  Compiling...
-  state.cpp
-  Generating Code...
+﻿  Buffer.cpp
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)
