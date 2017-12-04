@@ -4,3 +4,4 @@
 
 void wColorOn(WINDOW *win, int foreground, int background);
 void wColorOff(WINDOW *win, int foreground, int background);
+void initializeColors();

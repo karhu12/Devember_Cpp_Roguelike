@@ -10,4 +10,5 @@ public:
 	void drawBorders(WINDOW * status, WINDOW * textBar);						/* draw borders */
 	void drawGame(WINDOW * game, Map map, Tile tile[], character *player);		/* Draw game state */
 	void drawStatus(WINDOW * status, character * player);						/* Draw status window specific */
+	void listCommands(WINDOW * text);									/* List available commands on text bar */
 };

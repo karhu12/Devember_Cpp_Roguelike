@@ -8,6 +8,9 @@ character character::createPlayer() {			/* Initializes the values of player obje
 	player.level = 1;
 	player.health = 100;
 	player.experience = 0;
+	player.strength = 10;
+	player.dexterity = 10;
+	player.intelligence = 10;
 	player.xPos = 30;
 	player.yPos = 9;
 	player.playerCharacter = 'P';

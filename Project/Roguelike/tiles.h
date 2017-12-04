@@ -1,6 +1,8 @@
 #pragma once
+#define MAX_TILES 6
+#define COLOR_GREY 8
 
-#define MAX_TILES 3
+enum tiles { GRASS = 0, FOREST = 1, THICK_FOREST = 2, LAKE = 3, PATH = 4 , BEACH = 5};
 
 struct Tile {
 	std::string tileName;

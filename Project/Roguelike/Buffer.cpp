@@ -34,6 +34,24 @@ void Buffer::drawGame(WINDOW * game, Map map, Tile tile[], character *player) {
 	wrefresh(game);												/* Refresh buffer */
 }
 
+void Buffer::listCommands(WINDOW * text) {
+	noecho();
+	attron(A_BOLD);
+	mvwprintw(text, 1, 2, "COMMANDS | ");
+	wColorOn(text, COLOR_GREEN, COLOR_BLACK);
+	wprintw(text, "w / a / s / d ");
+	wColorOff(text, COLOR_GREEN, COLOR_BLACK);
+	wprintw(text, "for player movements | ");
+	wColorOn(text, COLOR_RED, COLOR_BLACK);
+	wprintw(text, "q"); 
+	wColorOff(text, COLOR_RED, COLOR_BLACK);
+	wprintw(text, " to quit | ");
+	mvwprintw(text, 3, 2, "Press any key to return ");
+	wgetch(text);
+	wclear(text);
+	echo();
+}
+
 void Buffer::drawStatus(WINDOW * status, character * player) {	/* Draw player status */
 	wattron(status, A_BOLD);
 	mvwprintw(status, 2, 2, "PLAYER");
@@ -57,6 +75,9 @@ void Buffer::drawStatus(WINDOW * status, character * player) {	/* Draw player st
 	wColorOn(status, COLOR_BLUE, COLOR_BLUE);
 	mvwprintw(status, 12, 2, "INT");
 	wColorOff(status, COLOR_BLUE, COLOR_BLUE);
+	mvwprintw(status, 10, 10, "%d", player->strength);
+	mvwprintw(status, 11, 10, "%d", player->dexterity);
+	mvwprintw(status, 12, 10, "%d", player->intelligence);
 	wattroff(status, A_BOLD);
 	wrefresh(status);
 }

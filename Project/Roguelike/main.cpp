@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "general.h"
 
+
 int main() {
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
@@ -11,36 +12,19 @@ int main() {
 	Tile tile[MAX_TILES];
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
 
-	char input;
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
 	resize_term(37, 91);							/* Set initial window size */
-	int ind = 1;
-	if (has_colors() == TRUE) {						/* Initialize all possible color pairs */
-		start_color();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j <= 8; j++) {
-				init_pair(ind, i, j);
-				ind++;
-			}
-		}
-	}
-
-
-
+	initializeColors();								/* Start colors and initialize 64 color pairs */
+	
 	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 	game.status = true;
-	while (game.status == true) {					/* game loop which updates every input */
-		game.drawBorders(game.statusWindow, game.textWindow);
-		game.drawStatus(game.statusWindow, &player);
-		game.drawGame(game.gameWindow, map, tile, &player);
-		mvwprintw(game.textWindow, 1, 2, "X : %2d  Y : %2d", player.xPos, player.yPos);
-		input = mvwgetch(game.textWindow, 3, 2);
-
-		if (input == 'q')
-			game.status = false;
-		else
-			player.playerMovement(map, tile, input);
+	while (game.status == true) {									/* game loop which updates every input */
+		game.drawBorders(game.statusWindow, game.textWindow);		/* Draw borders for status and text window */
+		game.drawStatus(game.statusWindow, &player);				/* Draw all status window content */
+		game.drawGame(game.gameWindow, map, tile, &player);			/* Draw game screen depending on current map */
+		player.input = mvwgetch(game.textWindow, 3, 2);				/* Get input from player */
+		game.command(player.input, &player, map, tile);				/* Execute command depending on input */
 	}
 	game.bufferRelease(&game);
 													/* Release window buffer memory */
