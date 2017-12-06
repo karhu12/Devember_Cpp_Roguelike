@@ -23,8 +23,8 @@ Map *Map::createMap() {
 		}
 	}
 
-	for (int i = 4; i < AREA_MAX_HEIGHT-4; i++) {
-		for (int j = 4; j < AREA_MAX_WIDTH-4; j++) {
+	for (int i = randomNumber(0, 10); i < randomNumber(11,14); i++) {
+		for (int j = randomNumber(0, 20); j < randomNumber(21,40); j++) {
 			map->area[i][j] = FOREST;
 		}
 	}
@@ -38,11 +38,11 @@ Map *Map::createMap() {
 	return map;
 }
 
-Map *Map::newMap(Map *map, std::map<int, Map *>zone) {
+Map *Map::newMap(Map *map, std::map<int, Map *> *zone) {
 	static short maps = 1;
 	map->trigger.link = maps + 1;
 	map->trigger.ownLink = maps;
-	zone[maps] = map;
+	(*zone)[maps] = map;
 	map = new Map;
 	map = Map::createMap();
 	map->area[0][25] = FOREST_EXIT;
@@ -54,10 +54,9 @@ Map *Map::newMap(Map *map, std::map<int, Map *>zone) {
 	return map;
 }
 
-Map *Map::loadMap(Map *map, std::map<int, Map *>zone) {
+Map *Map::loadMap(Map *map, std::map<int, Map *> *zone) {
 	short selectedMap = map->trigger.link;
-	zone[map->trigger.ownLink] = map;
-	map = new Map;
-	map = zone[selectedMap];
+	(*zone)[map->trigger.ownLink] = map;
+	map = (*zone)[selectedMap];
 	return map;	
 }

@@ -8,7 +8,8 @@ int main() {
 	srand(time(NULL));
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
-	std::map<int, Map *> mapOfLevels;				/* Stores level pointers */
+	std::map<int, Map *> *mapOfLevels 
+	= new std::map<int, Map *>;						/* Dynamic map pointer that stores map pointers*/
 	Map *map = Map::createMap();					/* Create map object */
 	Tile tile[MAX_TILES];
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
@@ -30,6 +31,7 @@ int main() {
 			}
 			else if (map->trigger.link != 0) {
 				map = map->loadMap(map, mapOfLevels);
+				mvwprintw(game.textWindow, 1, 1, "Loading existing map...");
 			}
 		}
 		player.input = mvwgetch(game.textWindow, 3, 2);				/* Get input from player */
