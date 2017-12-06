@@ -1,8 +1,2 @@
-﻿  state.cpp
-  main.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  Buffer.cpp
-  LINK : D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe not found or not built by the last incremental link; performing full link
-  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
-  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)
+﻿  Map.cpp
+  Roguelike.vcxproj -> C:\Users\shyle\Desktop\Git\Devember\Project\Roguelike\Debug\Roguelike.exe

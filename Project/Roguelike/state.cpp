@@ -5,9 +5,9 @@
 #include "tiles.h"
 
 void state::bufferCreate(state *game) {
-	game->statusWindow = newwin(20, 20, 5, 0);
-	game->gameWindow = newwin(19, 61, 6, 23);
-	game->textWindow = newwin(5, 85, 0, 0);
+	game->statusWindow = newwin(STATUS_SCREEN_HEIGHT, STATUS_SCREEN_WIDTH, 0, 0);
+	game->gameWindow = newwin(AREA_MAX_HEIGHT, AREA_MAX_WIDTH, 1, STATUS_SCREEN_WIDTH + 1);
+	game->textWindow = newwin(TEXT_SCREEN_HEIGHT, TEXT_SCREEN_WIDTH, STATUS_SCREEN_HEIGHT, 0);
 }
 
 void state::bufferRelease(state *game) {

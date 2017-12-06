@@ -26,17 +26,17 @@ void defineTiles(Tile tile[]) {
 	tile[3].foregroundColor = COLOR_BLUE;
 	tile[3].backgroundColor = COLOR_BLUE;
 
-	tile[4].tileName = "Path";
-	tile[4].tileCharacter = ' ';
-	tile[4].walkable = true;
+	tile[4].tileName = "Mountain";
+	tile[4].tileCharacter = '#';
+	tile[4].walkable = false;
 	tile[4].foregroundColor = COLOR_GREY;
 	tile[4].backgroundColor = COLOR_GREY;
 
-	tile[5].tileName = "Beach";
-	tile[5].tileCharacter = ACS_BLOCK;
+	tile[5].tileName = "Rocky terrain";
+	tile[5].tileCharacter = '.';
 	tile[5].walkable = true;
-	tile[5].foregroundColor = COLOR_YELLOW;
-	tile[5].backgroundColor = COLOR_YELLOW;
+	tile[5].foregroundColor = COLOR_WHITE;
+	tile[5].backgroundColor = COLOR_BLACK;
 }
 
 int returnColorPair(int foreground, int background) {

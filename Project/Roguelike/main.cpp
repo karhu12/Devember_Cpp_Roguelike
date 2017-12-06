@@ -5,7 +5,9 @@
 #include "general.h"
 
 
+
 int main() {
+	srand(time(NULL));
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
 	std::map<std::string, Map *> mapOfLevel;
@@ -15,7 +17,7 @@ int main() {
 
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
-	resize_term(37, 91);							/* Set initial window size */
+	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */
 	initializeColors();								/* Start colors and initialize 64 color pairs */
 	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 	game.status = true;

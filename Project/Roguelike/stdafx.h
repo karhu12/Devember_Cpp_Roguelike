@@ -3,10 +3,16 @@
 // are changed infrequently
 //
 
-#define AREA_MAX_WIDTH 60
-#define AREA_MAX_HEIGHT 18
-
 #pragma once
+
+#define SCREEN_WIDTH 76
+#define SCREEN_HEIGHT 35
+#define TEXT_SCREEN_HEIGHT 5
+#define TEXT_SCREEN_WIDTH 75
+#define STATUS_SCREEN_HEIGHT 30
+#define STATUS_SCREEN_WIDTH 20
+#define AREA_MAX_WIDTH 53
+#define AREA_MAX_HEIGHT 28
 
 #include "targetver.h"
 #include <stdio.h>
@@ -14,6 +20,8 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <cstdlib>
+#include <time.h>
 
 // TODO: reference additional headers your program requires here
 #include "curses.h"

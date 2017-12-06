@@ -23,3 +23,8 @@ void initializeColors() {
 		}
 	}
 }
+
+int randomNumber(int minValue, int maxValue) {
+	int number = rand() % maxValue + minValue;
+	return number;
+}
