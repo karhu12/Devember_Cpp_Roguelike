@@ -5,14 +5,14 @@
 
 #pragma once
 
-#define SCREEN_WIDTH 76
-#define SCREEN_HEIGHT 35
+#define SCREEN_WIDTH 77
+#define SCREEN_HEIGHT 36
 #define TEXT_SCREEN_HEIGHT 5
 #define TEXT_SCREEN_WIDTH 75
 #define STATUS_SCREEN_HEIGHT 30
 #define STATUS_SCREEN_WIDTH 20
-#define AREA_MAX_WIDTH 53
-#define AREA_MAX_HEIGHT 28
+#define AREA_MAX_WIDTH 54
+#define AREA_MAX_HEIGHT 29
 
 #include "targetver.h"
 #include <stdio.h>

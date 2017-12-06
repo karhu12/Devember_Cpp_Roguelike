@@ -4,13 +4,11 @@
 #include "Map.h"
 #include "general.h"
 
-
-
 int main() {
 	srand(time(NULL));
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
-	std::map<std::string, Map *> mapOfLevel;
+	std::map<int, Map *> mapOfLevels;				/* Stores level pointers */
 	Map *map = Map::createMap();					/* Create map object */
 	Tile tile[MAX_TILES];
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
@@ -25,6 +23,15 @@ int main() {
 		game.drawBorders(game.statusWindow, game.textWindow);		/* Draw borders for status and text window */
 		game.drawStatus(game.statusWindow, &player);				/* Draw all status window content */
 		game.drawGame(game.gameWindow, map, tile, &player);			/* Draw game screen depending on current map */
+		if (tile[map->area[player.yPos][player.xPos]].trigger == true) {
+			if (map->trigger.link == 0) {
+				map = map->newMap(map, mapOfLevels);
+				mvwprintw(game.textWindow, 1, 1, "New map created...");
+			}
+			else if (map->trigger.link != 0) {
+				map = map->loadMap(map, mapOfLevels);
+			}
+		}
 		player.input = mvwgetch(game.textWindow, 3, 2);				/* Get input from player */
 		game.command(player.input, &player, map, tile);				/* Execute command depending on input */
 	}

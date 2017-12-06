@@ -5,56 +5,59 @@
 
 Map *Map::createMap() {
 	Map *map = new Map;
-	int terrainType = randomNumber(1,4);
+	Trigger trigger;
+	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
+		for (int j = 0; j < AREA_MAX_WIDTH; j++)
+			map->area[i][j] = GRASS;						/* Initialize map with grass values */
 
-	if (terrainType == 1)
-		map->environment = "Forest";
-	else if (terrainType == 2)
-		map->environment = "Field";
-	else if (terrainType == 3)
-		map->environment = "Cave";
-	else
-		map->environment = "Mountain";
-
-
-	if (map->environment == "Forest") {
-		for (int i = 0; i < AREA_MAX_HEIGHT; i++)
-			for (int j = 0; j < AREA_MAX_WIDTH; j++)
-				map->area[i][j] = GRASS;						/* Initialize map with grass values */
-
-		for (int i = 4; i < 12; i++)
-			for (int j = 20; j < 40; j++)
-				map->area[i][j] = FOREST;
+	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {				/* Generate borders for the map */
+		for (int j = 0; j < AREA_MAX_WIDTH; j++) {
+			if (i == 0 && j >= 0 && j < AREA_MAX_WIDTH)
+				map->area[i][j] = THICK_FOREST;
+			if (i == AREA_MAX_HEIGHT - 1 && j >= 0 && j < AREA_MAX_WIDTH)
+				map->area[i][j] = THICK_FOREST;
+			if (j == 0 && i >= 0 && i < AREA_MAX_HEIGHT)
+				map->area[i][j] = THICK_FOREST;
+			if (j == AREA_MAX_WIDTH - 1 && i >= 0 && i < AREA_MAX_HEIGHT)
+				map->area[i][j] = THICK_FOREST;
+		}
 	}
-	else if (map->environment == "Field") {
-		for (int i = 0; i < AREA_MAX_HEIGHT; i++)
-			for (int j = 0; j < AREA_MAX_WIDTH; j++)
-				map->area[i][j] = GRASS;
 
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 10; j++)
-				map->area[i][j] = FOREST;
+	for (int i = 4; i < AREA_MAX_HEIGHT-4; i++) {
+		for (int j = 4; j < AREA_MAX_WIDTH-4; j++) {
+			map->area[i][j] = FOREST;
+		}
 	}
-	else if (map->environment == "Cave") {
-		for (int i = 0; i < AREA_MAX_HEIGHT; i++)
-			for (int j = 0; j < AREA_MAX_WIDTH; j++)
-				if (i > 0 && i < AREA_MAX_HEIGHT - 1 && j > 0 && j < AREA_MAX_WIDTH - 1) {
-					map->area[i][j] = ROCKY_TERRAIN;
-				}
-				else {
-					map->area[i][j] = MOUNTAIN;
-				}
-	}
-	else {
-		for (int i = 0; i < AREA_MAX_HEIGHT; i++)
-			for (int j = 0; j < AREA_MAX_WIDTH; j++)
-				if (i > 0 && i < AREA_MAX_HEIGHT - 1 && j > 0 && j < AREA_MAX_WIDTH - 1) {
-					map->area[i][j] = ROCKY_TERRAIN;
-				}
-				else {
-					map->area[i][j] = MOUNTAIN;
-				}
-	}
+
+	map->trigger.link = 0;
+	map->trigger.type = "Forest";
+	map->trigger.xPos = 20;
+	map->trigger.yPos = 0;
+	map->area[0][20] = FOREST_EXIT;
 
 	return map;
+}
+
+Map *Map::newMap(Map *map, std::map<int, Map *>zone) {
+	static short maps = 1;
+	map->trigger.link = maps + 1;
+	map->trigger.ownLink = maps;
+	zone[maps] = map;
+	map = new Map;
+	map = Map::createMap();
+	map->area[0][25] = FOREST_EXIT;
+	map->trigger.link = 1;
+	map->trigger.ownLink = maps + 1;
+	map->trigger.xPos = 25;
+	map->trigger.yPos = 0;
+	maps++;
+	return map;
+}
+
+Map *Map::loadMap(Map *map, std::map<int, Map *>zone) {
+	short selectedMap = map->trigger.link;
+	zone[map->trigger.ownLink] = map;
+	map = new Map;
+	map = zone[selectedMap];
+	return map;	
 }
