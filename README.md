@@ -37,3 +37,18 @@ I created struct with games tileset. It includes tile names, types, colors and e
 I also created a function that is able to determine which color pairs to apply when drawing game screen.
 Also i divided the classes and functions yet more clearly to subfiles.
 In general really productive and teaching day! :)
+
+4.12.2017
+---------
+Day spent mostly on cleaning the code to however clean state i can currently get.
+I also did some research on how to start making new zones.
+
+5.12.2017
+---------
+Really unproductive day. I was not able to really do any real coding except a few lines. I was having really hard time figuring how to proceed from here on out.
+Figured i should use pointers on map objects to create more dynamic maps but have no clue how to store them.
+
+6.12.2017
+---------
+I got a whiff. I heard there is things called "maps" which can store different data. Tried implementing maps in my work. It seemed to be considerably harder than what i imagined.
+But its okay because i know somewhat what i am aiming for here!
