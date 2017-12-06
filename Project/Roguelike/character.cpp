@@ -18,25 +18,25 @@ character character::createPlayer() {			/* Initializes the values of player obje
 	return player;
 }
 
-void character::playerMovement(Map map, Tile tile[], char input) {
+void character::playerMovement(Map *map, Tile tile[], char input) {
 	if (input == 'd' || input == 'D') {
 		if (this->xPos < AREA_MAX_WIDTH - 1)
-			if (tile[map.area[this->yPos][this->xPos + 1]].walkable == true)
+			if (tile[map->area[this->yPos][this->xPos + 1]].walkable == true)
 				this->xPos += 1;
 	}
 	if (input == 'a' || input == 'A') {
 		if (this->xPos > 0)
-			if (tile[map.area[this->yPos][this->xPos + -1]].walkable == true)
+			if (tile[map->area[this->yPos][this->xPos + -1]].walkable == true)
 				this->xPos -= 1;
 	}
 	if (input == 'w' || input == 'W') {
 		if (this->yPos > 0)
-			if (tile[map.area[this->yPos - 1][this->xPos]].walkable == true)
+			if (tile[map->area[this->yPos - 1][this->xPos]].walkable == true)
 				this->yPos -= 1;
 	}
 	if (input == 's' || input == 'S') {
 		if (this->yPos < AREA_MAX_HEIGHT - 1)
-			if (tile[map.area[this->yPos + 1][this->xPos]].walkable == true)
+			if (tile[map->area[this->yPos + 1][this->xPos]].walkable == true)
 				this->yPos += 1;
 	}
 }

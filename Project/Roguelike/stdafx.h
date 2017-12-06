@@ -13,7 +13,7 @@
 #include <tchar.h>
 #include <string>
 #include <iostream>
-
+#include <map>
 
 // TODO: reference additional headers your program requires here
 #include "curses.h"

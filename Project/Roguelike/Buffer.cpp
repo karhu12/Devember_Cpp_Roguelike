@@ -9,12 +9,12 @@ void Buffer::drawBorders(WINDOW * status, WINDOW * text) {
 	wrefresh(text);												/* Refresh draws buffer to the actual screen */
 }
 
-void Buffer::drawGame(WINDOW * game, Map map, Tile tile[], character *player) {
+void Buffer::drawGame(WINDOW * game, Map *map, Tile tile[], character *player) {
 	int x;
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {					/* Nestedloop to start from 0,0 and end at last coordinate*/
 		for (int j = 0; j < AREA_MAX_WIDTH; j++) {
 			if (i == player->yPos && j == player->xPos) {		/* If position is players position, draw player */
-				x = returnColorPair(player->foregroundColor, tile[map.area[i][j]].backgroundColor);
+				x = returnColorPair(player->foregroundColor, tile[map->area[i][j]].backgroundColor);
 				wattron(game, A_BOLD);
 				wattron(game, COLOR_PAIR(x));
 				mvwaddch(game, i, j, player->playerCharacter);
@@ -22,10 +22,10 @@ void Buffer::drawGame(WINDOW * game, Map map, Tile tile[], character *player) {
 				wattroff(game, A_BOLD);
 			}
 			else {												/* Else draw tile */
-				x = returnColorPair(tile[map.area[i][j]].foregroundColor, tile[map.area[i][j]].backgroundColor);
+				x = returnColorPair(tile[map->area[i][j]].foregroundColor, tile[map->area[i][j]].backgroundColor);
 				wattron(game, A_BOLD);
 				wattron(game, COLOR_PAIR(x));
-				mvwaddch(game, i, j, tile[map.area[i][j]].tileCharacter);
+				mvwaddch(game, i, j, tile[map->area[i][j]].tileCharacter);
 				wattroff(game, COLOR_PAIR(x));
 				wattroff(game, A_BOLD);
 			}

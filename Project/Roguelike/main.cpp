@@ -8,7 +8,8 @@
 int main() {
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
-	Map map = Map::createMap();						/* Create map object */
+	std::map<std::string, Map *> mapOfLevel;
+	Map *map = Map::createMap();					/* Create map object */
 	Tile tile[MAX_TILES];
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
 
@@ -16,7 +17,6 @@ int main() {
 	curs_set(0);									/* Hide cursor */
 	resize_term(37, 91);							/* Set initial window size */
 	initializeColors();								/* Start colors and initialize 64 color pairs */
-	
 	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 	game.status = true;
 	while (game.status == true) {									/* game loop which updates every input */

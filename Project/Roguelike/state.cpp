@@ -17,7 +17,7 @@ void state::bufferRelease(state *game) {
 	endwin();									/* free every windows buffer memory */
 }
 
-void state::command(char cmd, character *player, Map map, Tile tile[]) {
+void state::command(char cmd, character *player, Map *map, Tile tile[]) {
 	if (cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd') {
 		player->playerMovement(map,tile,cmd);
 	}

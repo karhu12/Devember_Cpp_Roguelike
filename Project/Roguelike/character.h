@@ -11,6 +11,6 @@ public:
 	short foregroundColor;										/* Players representing color on console*/
 	char input;													/* Used for player input with getch */
 	chtype playerCharacter;										/* Tile representing player */
-	void playerMovement(Map map, Tile tile[], char input);		/* Player functions */
+	void playerMovement(Map *map, Tile tile[], char input);		/* Player functions */
 	static character createPlayer();
 };
