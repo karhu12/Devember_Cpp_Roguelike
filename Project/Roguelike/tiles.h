@@ -7,7 +7,7 @@ enum tiles { GRASS = 0, FOREST = 1, THICK_FOREST = 2, LAKE = 3, MOUNTAIN = 4 , R
 struct Tile {
 	std::string tileName;
 	chtype tileCharacter;
-	bool walkable, trigger;
+	bool walkable, exit;
 	short foregroundColor, backgroundColor;
 } ;
 

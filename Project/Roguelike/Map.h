@@ -13,7 +13,7 @@ public:
 	short id;										/* Used to locate map */
 	short xExit,yExit;
 	static Map *createMap();
-	Map *newMap(Map *map, std::map<int, Map *> *zone);
-	Map *loadMap(Map *map, std::map<int, Map *> *zone);
-	Trigger trigger;
+	Map *newMap(Map *map, std::map<int, Map *> *zone, int index);
+	Map *loadMap(Map *map, std::map<int, Map *> *zone, int index);
+	Trigger exit[2];
 };

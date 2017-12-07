@@ -5,7 +5,7 @@
 
 Map *Map::createMap() {
 	Map *map = new Map;
-	Trigger trigger;
+	static short created = 0;
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
 		for (int j = 0; j < AREA_MAX_WIDTH; j++)
 			map->area[i][j] = GRASS;						/* Initialize map with grass values */
@@ -28,35 +28,55 @@ Map *Map::createMap() {
 			map->area[i][j] = FOREST;
 		}
 	}
-
-	map->trigger.link = 0;
-	map->trigger.type = "Forest";
-	map->trigger.xPos = 20;
-	map->trigger.yPos = 0;
-	map->area[0][20] = FOREST_EXIT;
-
+	if (created == 0) {
+		map->id = 1;
+		for (int i = 0; i < 2; i++) {
+			map->exit[i].link = 0;
+			map->exit[i].ownLink = 1;
+			map->exit[i].xPos = randomNumber(0, AREA_MAX_WIDTH);
+			map->exit[i].yPos = 0;
+			map->area[map->exit[i].yPos][map->exit[i].xPos] = FOREST_EXIT;
+			if (i == 1) created++;
+		}
+	}
+	else {
+		map->exit[1].link = 0;
+		map->exit[1].type = "Forest";
+		map->exit[1].xPos = randomNumber(0, AREA_MAX_WIDTH);
+		map->exit[1].yPos = 0;
+		map->area[map->exit[1].yPos][map->exit[1].xPos] = FOREST_EXIT;
+	}
 	return map;
 }
 
-Map *Map::newMap(Map *map, std::map<int, Map *> *zone) {
-	static short maps = 1;
-	map->trigger.link = maps + 1;
-	map->trigger.ownLink = maps;
+Map *Map::newMap(Map *map, std::map<int, Map *> *zone, int index) {
+	static short maps = 1, oldLink;
+	short oldExitX = map->exit[index].xPos, oldExitY = map->exit[index].yPos;
+	map->exit[index].link = maps + 1;
+	map->exit[index].ownLink = map->id;
+	oldLink = map->id;
 	(*zone)[maps] = map;
 	map = new Map;
 	map = Map::createMap();
-	map->area[0][25] = FOREST_EXIT;
-	map->trigger.link = 1;
-	map->trigger.ownLink = maps + 1;
-	map->trigger.xPos = 25;
-	map->trigger.yPos = 0;
+	map->exit[0].link = oldLink;
+	map->id = maps + 1;
+	map->exit[0].ownLink = map->id;
+	if (oldExitX == 0) {
+		map->exit[0].xPos = AREA_MAX_WIDTH;
+		map->exit[0].yPos = oldExitY;
+	}
+	else if (oldExitY == 0) {
+		map->exit[0].yPos = AREA_MAX_HEIGHT - 1;
+		map->exit[0].xPos = oldExitX;
+	}
+	map->area[map->exit[0].yPos][map->exit[0].xPos] = FOREST_EXIT;
 	maps++;
 	return map;
 }
 
-Map *Map::loadMap(Map *map, std::map<int, Map *> *zone) {
-	short selectedMap = map->trigger.link;
-	(*zone)[map->trigger.ownLink] = map;
+Map *Map::loadMap(Map *map, std::map<int, Map *> *zone, int index) {
+	short selectedMap = map->exit[index].link;
+	(*zone)[map->exit[index].ownLink] = map;
 	map = (*zone)[selectedMap];
 	return map;	
 }

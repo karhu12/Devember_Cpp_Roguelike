@@ -24,18 +24,26 @@ int main() {
 		game.drawBorders(game.statusWindow, game.textWindow);		/* Draw borders for status and text window */
 		game.drawStatus(game.statusWindow, &player);				/* Draw all status window content */
 		game.drawGame(game.gameWindow, map, tile, &player);			/* Draw game screen depending on current map */
-		if (tile[map->area[player.yPos][player.xPos]].trigger == true) {
-			if (map->trigger.link == 0) {
-				map = map->newMap(map, mapOfLevels);
-				mvwprintw(game.textWindow, 1, 1, "New map created...");
-			}
-			else if (map->trigger.link != 0) {
-				map = map->loadMap(map, mapOfLevels);
-				mvwprintw(game.textWindow, 1, 1, "Loading existing map...");
-			}
-		}
 		player.input = mvwgetch(game.textWindow, 3, 2);				/* Get input from player */
 		game.command(player.input, &player, map, tile);				/* Execute command depending on input */
+		if (tile[map->area[player.yPos][player.xPos]].exit == true) {
+			for (int i = 0; i < 2; i++) {
+				if (map->exit[i].xPos == player.xPos && map->exit[i].yPos == player.yPos) {
+					if (map->exit[i].link == 0) {
+						map = map->newMap(map, mapOfLevels, i);
+						player.yPos = map->exit[0].yPos;
+						player.xPos = map->exit[0].xPos;
+						mvwprintw(game.textWindow, 1, 1, "New map created...");
+						break;
+					}
+					else if (map->exit[i].link != 0) {
+						map = map->loadMap(map, mapOfLevels, i);
+						mvwprintw(game.textWindow, 1, 1, "Loading existing map...");
+						break;
+					}
+				}
+			}
+		}
 	}
 	game.bufferRelease(&game);
 													/* Release window buffer memory */
