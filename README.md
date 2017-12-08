@@ -52,3 +52,9 @@ Figured i should use pointers on map objects to create more dynamic maps but hav
 ---------
 I got a whiff. I heard there is things called "maps" which can store different data. Tried implementing maps in my work. It seemed to be considerably harder than what i imagined.
 But its okay because i know somewhat what i am aiming for here!
+
+7.12.2017
+---------
+Finally the breakthrough. It took considerable amount of time today to finally figure what i wanted to do with the zones.
+I implemented system which used map ID's to locate different map pointers. and exits which have links to different ID's.
+Quite proud of this to be honest even tho its nothing amazing. Finally time to start doing some of the game logic!
