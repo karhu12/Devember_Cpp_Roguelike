@@ -58,3 +58,8 @@ But its okay because i know somewhat what i am aiming for here!
 Finally the breakthrough. It took considerable amount of time today to finally figure what i wanted to do with the zones.
 I implemented system which used map ID's to locate different map pointers. and exits which have links to different ID's.
 Quite proud of this to be honest even tho its nothing amazing. Finally time to start doing some of the game logic!
+
+8.12.2017
+---------
+Made the new area system work so that i changes player position 1 out of the exits position. Started working on random encounters.
+Player has a chance to enter encounter during movement (currently planning 10% chance). In the encounter there will be combat in menu fashion.
