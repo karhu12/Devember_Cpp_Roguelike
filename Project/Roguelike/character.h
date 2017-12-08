@@ -3,6 +3,8 @@
 #include "Map.h"
 #include "tiles.h"
 
+class Map;
+
 class character {
 public:
 	short health, level, experience;							/* Generic propertys of player */

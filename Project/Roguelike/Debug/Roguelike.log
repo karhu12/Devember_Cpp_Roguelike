@@ -1,3 +1,11 @@
-﻿  Map.cpp
+﻿  main.cpp
+d:\työpöytä\git\devember\project\roguelike\main.cpp(8): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Map.cpp
+  Generating Code...
+d:\työpöytä\git\devember\project\roguelike\map.cpp(102): warning C4715: 'Map::returnNewArea': not all control paths return a value
+  Skipping... (no relevant changes detected)
+  state.cpp
+  character.cpp
+  Buffer.cpp
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

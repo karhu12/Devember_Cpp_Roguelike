@@ -3,9 +3,10 @@
 #include "tiles.h"
 #include "general.h"
 
-Map *Map::createMap() {
+
+Map *Map::createMap() {										/* Function to create new map */
 	Map *map = new Map;
-	static short created = 0;
+	static short created = 0;								/* Used to intialize first time in certain fashion */
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++)
 		for (int j = 0; j < AREA_MAX_WIDTH; j++)
 			map->area[i][j] = GRASS;						/* Initialize map with grass values */
@@ -27,21 +28,20 @@ Map *Map::createMap() {
 		for (int j = randomNumber(0, 20); j < randomNumber(21,40); j++) {
 			map->area[i][j] = FOREST;
 		}
-	}
-	if (created == 0) {
+	}														/* Random forest generation (no logic) */
+
+	if (created == 0) {										/* First time setup for exits */
 		map->id = 1;
 		for (int i = 0; i < 2; i++) {
 			map->exit[i].link = 0;
-			map->exit[i].ownLink = 1;
 			map->exit[i].xPos = randomNumber(0, AREA_MAX_WIDTH);
 			map->exit[i].yPos = 0;
 			map->area[map->exit[i].yPos][map->exit[i].xPos] = FOREST_EXIT;
 			if (i == 1) created++;
 		}
 	}
-	else {
+	else {													/* Normal setup for exits*/
 		map->exit[1].link = 0;
-		map->exit[1].type = "Forest";
 		map->exit[1].xPos = randomNumber(0, AREA_MAX_WIDTH);
 		map->exit[1].yPos = 0;
 		map->area[map->exit[1].yPos][map->exit[1].xPos] = FOREST_EXIT;
@@ -49,34 +49,54 @@ Map *Map::createMap() {
 	return map;
 }
 
-Map *Map::newMap(Map *map, std::map<int, Map *> *zone, int index) {
-	static short maps = 1, oldLink;
-	short oldExitX = map->exit[index].xPos, oldExitY = map->exit[index].yPos;
-	map->exit[index].link = maps + 1;
-	map->exit[index].ownLink = map->id;
-	oldLink = map->id;
-	(*zone)[maps] = map;
-	map = new Map;
-	map = Map::createMap();
-	map->exit[0].link = oldLink;
-	map->id = maps + 1;
-	map->exit[0].ownLink = map->id;
+Map *Map::newMap(std::map<int, Map *> *mapOfLevels, int index) {
+	Map *newmap;
+	static short maps = 1, oldMapId;
+	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;
+	this->exit[index].link = maps + 1;
+	oldMapId = this->id;
+	(*mapOfLevels)[this->id] = this;
+	newmap = new Map;
+	newmap = Map::createMap();
+	newmap->exit[0].link = oldMapId;
+	newmap->id = maps + 1;
 	if (oldExitX == 0) {
-		map->exit[0].xPos = AREA_MAX_WIDTH;
-		map->exit[0].yPos = oldExitY;
+		newmap->exit[0].xPos = AREA_MAX_WIDTH;
+		newmap->exit[0].yPos = oldExitY;
 	}
 	else if (oldExitY == 0) {
-		map->exit[0].yPos = AREA_MAX_HEIGHT - 1;
-		map->exit[0].xPos = oldExitX;
+		newmap->exit[0].yPos = AREA_MAX_HEIGHT - 1;
+		newmap->exit[0].xPos = oldExitX;
 	}
-	map->area[map->exit[0].yPos][map->exit[0].xPos] = FOREST_EXIT;
+	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;
 	maps++;
-	return map;
+	return newmap;
 }
 
-Map *Map::loadMap(Map *map, std::map<int, Map *> *zone, int index) {
-	short selectedMap = map->exit[index].link;
-	(*zone)[map->exit[index].ownLink] = map;
-	map = (*zone)[selectedMap];
+Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int index) {
+	Map *map;
+	short selectedMap = this->exit[index].link;
+	(*mapOfLevels)[this->id] = this;
+	map = (*mapOfLevels)[selectedMap];
 	return map;	
+}
+
+Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game) {
+	Map *newmap;
+	for (int i = 0; i < 2; i++) {
+		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {
+			if (this->exit[i].link == 0) {
+				newmap = this->newMap(mapOfLevels, i);
+				player->yPos = newmap->exit[0].yPos;
+				player->xPos = newmap->exit[0].xPos;
+				mvwprintw(game.textWindow, 1, 1, "New map created...");
+				return newmap;
+			}
+			else if (this->exit[i].link != 0) {
+				newmap = this->loadMap(mapOfLevels, player, i);
+				mvwprintw(game.textWindow, 1, 1, "Loading existing map...");
+				return newmap;
+			}
+		}
+	}
 }
