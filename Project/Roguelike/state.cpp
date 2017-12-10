@@ -20,11 +20,15 @@ void state::bufferRelease(state *game) {
 void state::command(char cmd, character *player, Map *map, Tile tile[]) {
 	if (cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd') {
 		player->playerMovement(map,tile,cmd);
+		this->lastCommand = "Movement";
 	}
 	else if (cmd == 'h') {
 		this->listCommands(this->textWindow);
+		this->lastCommand = "Help";
 	}
 	else if (cmd == 'q') {
 		this->status = false;
+		this->lastCommand = "Quit";
+
 	}
 }

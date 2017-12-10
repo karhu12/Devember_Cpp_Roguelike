@@ -18,7 +18,7 @@ public:
 	short id;										/* Used to locate map */
 	static Map *createMap();
 	Trigger exit[2];
-	Map *newMap(std::map<int, Map *> *zone, int index);
+	Map *newMap(std::map<int, Map *> *zone, character *player, int index);
 	Map *loadMap(std::map<int, Map *> *mapOfLevels, character *player, int index);
 	Map *returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game);
 };

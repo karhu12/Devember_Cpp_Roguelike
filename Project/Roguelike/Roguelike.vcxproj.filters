@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Functions">
       <UniqueIdentifier>{940ef029-6c0b-4aa4-810c-1679ca83a1e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Classes\Enemies">
+      <UniqueIdentifier>{a8d1673b-2202-47a3-8578-1161fc5456c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -54,6 +57,9 @@
     <ClInclude Include="general.h">
       <Filter>Header Files\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -79,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="general.cpp">
       <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

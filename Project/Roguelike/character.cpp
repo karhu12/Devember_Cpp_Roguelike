@@ -11,6 +11,7 @@ character character::createPlayer() {			/* Initializes the values of player obje
 	player.strength = 10;
 	player.dexterity = 10;
 	player.intelligence = 10;
+	player.accuracy = 95;
 	player.xPos = 30;
 	player.yPos = 9;
 	player.playerCharacter = 'P';

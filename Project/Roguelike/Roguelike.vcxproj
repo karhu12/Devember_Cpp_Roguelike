@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="general.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdafx.h" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="general.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="state.cpp" />

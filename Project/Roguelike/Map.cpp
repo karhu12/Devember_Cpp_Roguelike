@@ -49,7 +49,7 @@ Map *Map::createMap() {										/* Function to create new map */
 	return map;
 }
 
-Map *Map::newMap(std::map<int, Map *> *mapOfLevels, int index) {
+Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index) {
 	Map *newmap;
 	static short maps = 1, oldMapId;
 	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;
@@ -61,12 +61,16 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, int index) {
 	newmap->exit[0].link = oldMapId;
 	newmap->id = maps + 1;
 	if (oldExitX == 0) {
-		newmap->exit[0].xPos = AREA_MAX_WIDTH;
+		newmap->exit[0].xPos = AREA_MAX_WIDTH - 1;
 		newmap->exit[0].yPos = oldExitY;
+		player->yPos = newmap->exit[0].yPos;
+		player->xPos = newmap->exit[0].xPos - 1;
 	}
 	else if (oldExitY == 0) {
 		newmap->exit[0].yPos = AREA_MAX_HEIGHT - 1;
 		newmap->exit[0].xPos = oldExitX;
+		player->yPos = newmap->exit[0].yPos - 1;
+		player->xPos = newmap->exit[0].xPos;
 	}
 	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;
 	maps++;
@@ -76,8 +80,13 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, int index) {
 Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int index) {
 	Map *map;
 	short selectedMap = this->exit[index].link;
+	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;
 	(*mapOfLevels)[this->id] = this;
 	map = (*mapOfLevels)[selectedMap];
+	if (player->yPos == 0) player->yPos = AREA_MAX_HEIGHT - 2;
+	else if (player->yPos == AREA_MAX_HEIGHT - 1) player->yPos = 1;
+	else if (player->xPos == 0) player->xPos = AREA_MAX_WIDTH - 2;
+	else if (player->xPos == AREA_MAX_WIDTH - 1) player->xPos = 1;
 	return map;	
 }
 
@@ -86,9 +95,7 @@ Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, sta
 	for (int i = 0; i < 2; i++) {
 		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {
 			if (this->exit[i].link == 0) {
-				newmap = this->newMap(mapOfLevels, i);
-				player->yPos = newmap->exit[0].yPos;
-				player->xPos = newmap->exit[0].xPos;
+				newmap = this->newMap(mapOfLevels, player, i);
 				mvwprintw(game.textWindow, 1, 1, "New map created...");
 				return newmap;
 			}
