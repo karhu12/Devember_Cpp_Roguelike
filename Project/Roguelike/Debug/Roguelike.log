@@ -1,4 +1,4 @@
-﻿  main.cpp
-d:\työpöytä\git\devember\project\roguelike\main.cpp(9): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  state.cpp
+d:\työpöytä\git\devember\project\roguelike\state.cpp(45): warning C4101: 'hitRoll': unreferenced local variable
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

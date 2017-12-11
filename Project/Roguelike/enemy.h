@@ -7,6 +7,7 @@ public:
 	short health;
 	short maxDamage, minDamage;
 	short accuracy;
+	bool alive;
 	chtype enemyCharacter;
-	static Enemy createEnemy();
+	void Enemy::enemyValues();
 };

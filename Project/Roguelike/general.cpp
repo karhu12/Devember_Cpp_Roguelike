@@ -28,3 +28,11 @@ int randomNumber(int minValue, int maxValue) {
 	int number = rand() % maxValue + minValue;
 	return number;
 }
+
+bool checkForEncounter() {
+	static int chance = 90;
+	if (chance > randomNumber(1, 100))
+		return false;
+	else
+		return true;
+}
