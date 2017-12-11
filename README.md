@@ -63,3 +63,15 @@ Quite proud of this to be honest even tho its nothing amazing. Finally time to s
 ---------
 Made the new area system work so that i changes player position 1 out of the exits position. Started working on random encounters.
 Player has a chance to enter encounter during movement (currently planning 10% chance). In the encounter there will be combat in menu fashion.
+
+9.12.2017
+---------
+Started thinking about how to implement the random encounters during movement. Just playing around with ideas.
+
+10.12.2017
+----------
+Base for the encounter programmed but it was kinda lack luster so it will probably be rewritten.
+
+11.12.2017
+----------
+Rewritten the encounter base to be alot clearer than before. No real game logic implemented on it yet tho.
