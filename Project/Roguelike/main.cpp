@@ -22,19 +22,19 @@ int main() {
 	game.bufferCreate(&game);						/* Create game windows of approppriate size */
 	game.status = true;
 	while (game.status == true) {										/* game loop which updates every input */
-		game.drawBorders();			/* Draw borders for status and text window */
-		game.drawStatus(&player);					/* Draw all status window content */
-		game.drawGame(map, tile, &player);				/* Draw game screen depending on current map */
-		player.input = mvwgetch(game.textWindow, 3, 2);					/* Get input from player */
-		game.command(player.input, &player, map, tile);					/* Execute command depending on input */
+		game.drawText();												/* Draw text window content */
+		game.drawStatus(&player);										/* Draw all status window content */
+		game.drawGame(map, tile, &player);								/* Draw game screen depending on current map */
 		if (tile[map->area[player.yPos][player.xPos]].exit == true) {	/* If player steps into exit */
 			map = map->returnNewArea(&player, mapOfLevels, game);		/* New zone is created or old one loaded */
 		}
 		else if (game.lastCommand == "Movement") {						/* On player movement chance to start random encounter */
 			if (checkForEncounter() == true) {							/* If encounter happens */
-				game.enemyEncounter();
+				game.enemyEncounter(&player);
 			}
 		}
+		player.input = mvwgetch(game.textWindow, 3, 1);					/* Get input from player */
+		game.command(player.input, &player, map, tile);					/* Execute command depending on input */
 	}
 	game.bufferRelease(&game);
 													/* Release window buffer memory */

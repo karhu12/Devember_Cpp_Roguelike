@@ -24,15 +24,19 @@ void initializeColors() {
 	}
 }
 
-int randomNumber(int minValue, int maxValue) {
-	int number = rand() % maxValue + minValue;
+int randomNumber(int minValue, int maxValue) {		/* Return random number*/
+	int number = rand() % (maxValue - minValue) + minValue;
 	return number;
 }
 
 bool checkForEncounter() {
-	static int chance = 90;
-	if (chance > randomNumber(1, 100))
-		return false;
-	else
+	static int chance = 95;							/* 5% chance to start random encounter */
+	if (randomNumber(1, 100) > chance) {			/* If encounter happens reset chance */
+		chance = 95;
 		return true;
+	}
+	else {
+		chance--;									/* Increases the chance to find encounter by 1% everytime you move */
+		return false;
+	}
 }

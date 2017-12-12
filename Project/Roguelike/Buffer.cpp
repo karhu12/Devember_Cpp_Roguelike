@@ -2,13 +2,6 @@
 #include "Buffer.h"
 #include "general.h"
 
-void Buffer::drawBorders() {
-	box(this->statusWindow, ACS_VLINE, ACS_HLINE);
-	box(this->textWindow, ACS_VLINE, ACS_HLINE);				/* draw borders to window buffers */
-	wrefresh(this->statusWindow);
-	wrefresh(this->textWindow);									/* Refresh draws buffer to the actual screen */
-}
-
 void Buffer::drawGame(Map *map, Tile tile[], character *player) {
 	int x;
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {					/* Nestedloop to start from 0,0 and end at last coordinate*/
@@ -53,6 +46,8 @@ void Buffer::listCommands() {
 }
 
 void Buffer::drawStatus(character * player) {	/* Draw player status */
+	wclear(this->statusWindow);
+	box(this->statusWindow, ACS_VLINE, ACS_HLINE);
 	wattron(this->statusWindow, A_BOLD);
 	mvwprintw(this->statusWindow, 2, 2, "PLAYER");
 	wColorOn(this->statusWindow, COLOR_RED, COLOR_BLACK);
@@ -80,4 +75,10 @@ void Buffer::drawStatus(character * player) {	/* Draw player status */
 	mvwprintw(this->statusWindow, 12, 10, "%d", player->intelligence);
 	wattroff(this->statusWindow, A_BOLD);
 	wrefresh(this->statusWindow);
+}
+
+void Buffer::drawText() {
+	wclear(this->textWindow);
+	box(this->textWindow, ACS_VLINE, ACS_HLINE);
+	wrefresh(this->textWindow);
 }
