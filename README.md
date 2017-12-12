@@ -75,3 +75,7 @@ Base for the encounter programmed but it was kinda lack luster so it will probab
 11.12.2017
 ----------
 Rewritten the encounter base to be alot clearer than before. No real game logic implemented on it yet tho.
+
+12.12.2017
+----------
+Some real game logic has been implemented. Simple encounter system where your player has a 5% chance to find random encounter with 1-3 enemies. Player always hits with random number between damageMin - damageMax. Same thing for enemies but they have chance to miss. Player can also flee from combat if he happens to succeed. some other small additions aswell. Really productive day!
