@@ -96,12 +96,12 @@ Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, sta
 		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {
 			if (this->exit[i].link == 0) {
 				newmap = this->newMap(mapOfLevels, player, i);
-				mvwprintw(game.textWindow, 1, 1, "New map created...");
+				//mvwprintw(game.textWindow, 1, 1, "New map created..."); DEBUG ONLY
 				return newmap;
 			}
 			else if (this->exit[i].link != 0) {
 				newmap = this->loadMap(mapOfLevels, player, i);
-				mvwprintw(game.textWindow, 1, 1, "Loading existing map...");
+				//mvwprintw(game.textWindow, 1, 1, "Loading existing map..."); DEBUG ONLY AFFECTED BY SCREEN CLEARING
 				return newmap;
 			}
 		}
