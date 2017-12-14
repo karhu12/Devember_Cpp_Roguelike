@@ -82,3 +82,11 @@ void Buffer::drawText() {
 	box(this->textWindow, ACS_VLINE, ACS_HLINE);
 	wrefresh(this->textWindow);
 }
+
+void Buffer::drawEncounter() {
+	wclear(this->gameWindow);
+	box(this->gameWindow, ACS_VLINE, ACS_HLINE);
+	wmove(this->gameWindow, 24, 1);
+	whline(this->gameWindow, ACS_HLINE, AREA_MAX_WIDTH - 2);
+	wrefresh(this->gameWindow);
+}

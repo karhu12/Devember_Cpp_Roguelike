@@ -22,6 +22,8 @@
 #include <map>
 #include <cstdlib>
 #include <time.h>
+#include <chrono>
+#include <thread>
 
 // TODO: reference additional headers your program requires here
 #include "curses.h"

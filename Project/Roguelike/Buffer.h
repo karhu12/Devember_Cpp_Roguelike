@@ -10,5 +10,6 @@ public:
 	void drawGame(Map *map, Tile tile[], character *player);	/* Draw game state */
 	void drawStatus(character * player);						/* Draw status window specific */
 	void drawText();											/* Draw text window base */
+	void drawEncounter();
 	void listCommands();										/* List available commands on text bar */
 };
