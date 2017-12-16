@@ -137,17 +137,17 @@ void state::enemyEncounter(character *player) {
 			else if (action == 'f' || action == 'F') {			/* Attempt to flee */
 				if (!attemptedFlee) {
 					this->drawEncounter();
-					mvwprintw(this->gameWindow, 25, 1, "Attempting to flee...");
+					mvwprintw(this->gameWindow, 1, 1, "Attempting to flee...");
 					if (!attemptedFlee) {						/* If you have not tried fleeing before */
 						roll = randomNumber(1, 100);
 						if (roll >= 75) {						/* 25 % chance to flee */
-							mvwprintw(this->gameWindow, 25, 1, "Success! You flee successfully...");
+							mvwprintw(this->gameWindow, 1, 1, "Success! You flee successfully...");
 							fled = true;
 							encounter = false;
 							validInput = true;
 						}
 						else {
-							mvwprintw(this->gameWindow, 25, 1, "Your flee attempt fails!");
+							mvwprintw(this->gameWindow, 1, 1, "Your flee attempt fails!");
 							attemptedFlee = true;
 							validInput = false;
 						}
@@ -155,23 +155,23 @@ void state::enemyEncounter(character *player) {
 				}
 				else {
 					this->drawEncounter();
-					mvwprintw(this->gameWindow, 25, 1, "I cant attempt fleeing again!");
+					mvwprintw(this->gameWindow, 1, 1, "I cant attempt fleeing again!");
 					validInput = false;
 				}
-				mvwprintw(this->gameWindow, 25, 1, "Press any key to continue...");
+				mvwprintw(this->gameWindow, 2, 1, "Press any key to continue...");
 				wgetch(this->gameWindow);
 			}
 			else if (action == 'h' || action == 'H') {		/* Lookup commands */
 				this->drawEncounter();
-				mvwprintw(this->gameWindow, 25, 1, "Commands");
-				mvwprintw(this->gameWindow, 25, 1, "'A' to Attack, 'F' to flee");
-				mvwprintw(this->gameWindow, 25, 1, "Press any key to continue...");
+				mvwprintw(this->gameWindow, 1, 1, "Commands");
+				mvwprintw(this->gameWindow, 2, 1, "'A' to Attack, 'F' to flee");
+				mvwprintw(this->gameWindow, 3, 1, "Press any key to continue...");
 				wgetch(this->gameWindow);
 				validInput = false;
 			}
 			else {											/* Else invalid input */
 				this->drawEncounter();
-				mvwprintw(this->gameWindow, 25, 1, "Invalid command! Check 'H' for commands");
+				mvwprintw(this->gameWindow, 1, 1, "Invalid command! Check 'H' for commands");
 				wrefresh(this->gameWindow);
 				validInput = false;
 			}
