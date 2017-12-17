@@ -87,3 +87,12 @@ No real coding today just designing the gameplay mechanics a little.
 14.12.2017
 ----------
 Taking a look how to make better game widow for the combat and thinking about a little pause before the combat starts so player does not input things on mistake.
+
+15.12.2017
+----------
+Got a small pause on the combat window and some small other additions. Still not entirely happy with it.
+
+16.12.2017
+----------
+Having trouble figuring out what to do next for the combat window so i have decided to move onto other things so i wont get stuck in this part only.
+
