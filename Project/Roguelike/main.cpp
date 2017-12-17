@@ -5,7 +5,7 @@
 #include "general.h"
 #include "enemy.h"
 
-int main() {
+int main() { 
 	srand(time(NULL));
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
@@ -14,7 +14,6 @@ int main() {
 	Map *map = Map::createMap();					/* Create map object */
 	Tile tile[MAX_TILES];
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
-
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
 	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */

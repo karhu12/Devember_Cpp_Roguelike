@@ -1,6 +1,9 @@
 ﻿  state.cpp
-  Items.cpp
+d:\työpöytä\git\devember\project\roguelike\state.cpp(123): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+d:\työpöytä\git\devember\project\roguelike\state.cpp(124): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+d:\työpöytä\git\devember\project\roguelike\state.cpp(125): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
   enemy.cpp
+  Items.cpp
   Generating Code...
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

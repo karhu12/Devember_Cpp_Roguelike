@@ -12,10 +12,13 @@ character character::createPlayer() {			/* Initializes the values of player obje
 	player.dexterity = 10;
 	player.intelligence = 10;
 	player.accuracy = 95;
-	player.minDamage = 5;
-	player.maxDamage = 15 - player.minDamage;
+	player.minDamage = 2;
+	player.maxDamage = 8;
+	player.accuracy = 80;
 	player.xPos = 30;
 	player.yPos = 9;
+	player.mainHand = player.generateItem("Barehand");
+	player.offHand = player.generateItem("Barehand");
 	player.playerCharacter = 'P';
 	player.foregroundColor = COLOR_CYAN;
 	return player;

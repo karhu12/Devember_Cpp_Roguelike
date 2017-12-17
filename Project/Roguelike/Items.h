@@ -2,7 +2,9 @@
 #include "stdafx.h"
 
 class Items {
+public:
 	std::string type;
 	short damageBonus, accuracyBonus;
-	short strMod, dexMod, intMod;
+	double strMod, dexMod, intMod;
+	Items generateItem(std::string str);
 };

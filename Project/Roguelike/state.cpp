@@ -114,21 +114,32 @@ void state::enemyEncounter(character *player) {
 					}
 				} while (!validAttack);
 
-				roll = randomNumber(player->minDamage, player->maxDamage);
 				this->drawEncounter();
 				mvwprintw(this->gameWindow, 25, 1, "You hit enemy %d...", actionToInt);
 				wgetch(this->gameWindow);
-				this->drawEncounter();
-				enemy[actionToInt - 1].health -= roll;
-				if (enemy[actionToInt - 1].health <= 0) {
-					enemy[actionToInt - 1].alive = false;
-					player->experience += enemy[actionToInt - 1].experienceGiven;
-					mvwprintw(this->gameWindow, 25, 1, "Enemy dies! It grants you %d experience!", enemy[actionToInt - 1].experienceGiven);
-					mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
-					wgetch(this->gameWindow);
+				roll = randomNumber(1, 100);
+				if (roll < player->accuracy + player->mainHand.accuracyBonus + player->offHand.accuracyBonus) {	/* If roll is lower than player accuracy it hits else miss */
+					roll = randomNumber(player->minDamage,  (player->maxDamage + player->mainHand.damageBonus + player->offHand.damageBonus));
+					roll += (player->strength * (player->mainHand.strMod + player->offHand.strMod));
+					roll += (player->dexterity * (player->mainHand.dexMod + player->offHand.dexMod));
+					roll += (player->intelligence * (player->mainHand.intMod + player->offHand.intMod));		/* Calculate damage from weapons mods and base stats */
+					this->drawEncounter();
+					enemy[actionToInt - 1].health -= roll;
+					if (enemy[actionToInt - 1].health <= 0) {
+						enemy[actionToInt - 1].alive = false;
+						player->experience += enemy[actionToInt - 1].experienceGiven;
+						mvwprintw(this->gameWindow, 25, 1, "Enemy dies! It grants you %d experience!", enemy[actionToInt - 1].experienceGiven);
+						mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
+						wgetch(this->gameWindow);
+					}
+					else {
+						mvwprintw(this->gameWindow, 25, 1, "You deal %d damage but the enemy still stands", roll);
+						mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
+						wgetch(this->gameWindow);
+					}
 				}
 				else {
-					mvwprintw(this->gameWindow, 25, 1, "You deal %d damage but the enemy still stands", roll);
+					mvwprintw(this->gameWindow, 25, 1, "Your attack misses...");
 					mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
 					wgetch(this->gameWindow);
 				}
@@ -192,12 +203,23 @@ void state::enemyEncounter(character *player) {
 			for (int i = 0; i < enemys; i++) {				/* enemy i's attack turn */
 				if (enemy[i].alive) {						/* if enemy is alive play his turn else do not */
 					roll = randomNumber(1, 100);
-					if (roll > enemy[i].accuracy) {			/* If enemy i's roll is higher than his accuracy, hit */
+					if (roll < enemy[i].accuracy) {			/* If enemy i's roll is lower than accuracy, hit */
 						roll = randomNumber(enemy[i].minDamage, enemy[i].maxDamage);
 						player->health -= roll;
-						mvwprintw(this->gameWindow, 25, 1, "Enemy %d hits player for %d damage!", i + 1, roll);
-						mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
-						wgetch(this->gameWindow);
+						if (player->health > 0) {
+							mvwprintw(this->gameWindow, 25, 1, "Enemy %d hits player for %d damage!", i + 1, roll);
+							mvwprintw(this->gameWindow, 26, 1, "Press any key to continue...");
+							wgetch(this->gameWindow);
+						}
+						else {
+							mvwprintw(this->gameWindow, 25, 1, "Enemy %d hits player for %d damage!", i + 1, roll);
+							mvwprintw(this->gameWindow, 26, 1, "Enemy has defeated you...");
+							mvwprintw(this->gameWindow, 27, 1, "GAME OVER");
+							wgetch(this->gameWindow);
+							encounter = false;
+							this->status = false;
+							break;
+						}
 					}
 					else {
 						mvwprintw(this->gameWindow, 25, 1, "Enemy %d misses player!", i + 1);
