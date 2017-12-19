@@ -32,35 +32,81 @@ Map *Map::createMap() {										/* Function to create new map */
 
 	if (created == 0) {										/* First time setup for exits */
 		map->id = 1;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) {						/* Loop for creating 2 exits on first area */
+			int x = randomNumber(1, 4);						/* Randomize if exits go on top/bottom or sides */
 			map->exit[i].link = 0;
-			map->exit[i].xPos = randomNumber(0, AREA_MAX_WIDTH);
-			map->exit[i].yPos = 0;
+			if (x == 1) {									/* Exit goes to random position on top */
+				map->exit[i].yPos = 0;
+				do {
+					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+			}
+			else if (x == 2) {								/* Exit goes to random position on bottom */
+				map->exit[i].yPos = AREA_MAX_HEIGHT - 1;
+				do {
+					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+			}
+			else if (x == 3) {								/* Exit goes to random position on left side */
+				map->exit[i].xPos = 0;
+				do {
+					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+			}
+			else {											/* Exit goes to random position on right side */
+				map->exit[i].xPos = AREA_MAX_WIDTH - 1;
+				do {
+					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+			}
 			map->area[map->exit[i].yPos][map->exit[i].xPos] = FOREST_EXIT;
 			if (i == 1) created++;
 		}
 	}
 	else {													/* Normal setup for exits*/
+		int x = randomNumber(1, 4);							/* Same random setup than before */
 		map->exit[1].link = 0;
-		map->exit[1].xPos = randomNumber(0, AREA_MAX_WIDTH);
-		map->exit[1].yPos = 0;
+		if (x == 1) {
+			map->exit[1].yPos = 0;
+			do {
+				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+		}
+		else if (x == 2) {
+			map->exit[1].yPos = AREA_MAX_HEIGHT - 1;
+			do {
+				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+		}
+		else if (x == 3) {
+			map->exit[1].xPos = 0;
+			do {
+				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+		}
+		else {
+			map->exit[1].xPos = AREA_MAX_WIDTH - 1;
+			do {
+				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+		}
 		map->area[map->exit[1].yPos][map->exit[1].xPos] = FOREST_EXIT;
 	}
 	return map;
 }
 
 Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index) {
-	Map *newmap;
-	static short maps = 1, oldMapId;
-	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;
-	this->exit[index].link = maps + 1;
-	oldMapId = this->id;
-	(*mapOfLevels)[this->id] = this;
+	Map *newmap;										/* New map to be returned */
+	static short maps = 1, oldMapId;					/* maps tracked statically */
+	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;	/* Set old x and y exit on variables*/
+	this->exit[index].link = maps + 1;					/* Current maps link will be the map to be created */
+	oldMapId = this->id;								/* Old maps id is current map */
+	(*mapOfLevels)[this->id] = this;					/* Store current object pointer in map */
 	newmap = new Map;
-	newmap = Map::createMap();
-	newmap->exit[0].link = oldMapId;
-	newmap->id = maps + 1;
-	if (oldExitX == 0) {
+	newmap = Map::createMap();							/* Create fresh map */
+	newmap->exit[0].link = oldMapId;					/* One exit will have the connection to old exit */
+	newmap->id = maps + 1;								/* New map id will be the same as link on old map */
+	if (oldExitX == 0) {								/* Change player position and new exit position depending on old position */
 		newmap->exit[0].xPos = AREA_MAX_WIDTH - 1;
 		newmap->exit[0].yPos = oldExitY;
 		player->yPos = newmap->exit[0].yPos;
@@ -72,7 +118,19 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index
 		player->yPos = newmap->exit[0].yPos - 1;
 		player->xPos = newmap->exit[0].xPos;
 	}
-	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;
+	else if (oldExitX == AREA_MAX_WIDTH) {
+		newmap->exit[0].xPos = 1;
+		newmap->exit[0].yPos = oldExitY;
+		player->yPos = newmap->exit[0].yPos;
+		player->xPos = newmap->exit[0].xPos - 1;
+	}
+	else if (oldExitY == AREA_MAX_HEIGHT) {
+		newmap->exit[0].yPos = 1;
+		newmap->exit[0].xPos = oldExitX;
+		player->yPos = newmap->exit[0].yPos - 1;
+		player->xPos = newmap->exit[0].xPos;
+	}
+	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;	/* Set new exit position be recognisible tile */
 	maps++;
 	return newmap;
 }
@@ -91,17 +149,15 @@ Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int ind
 }
 
 Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game) {
-	Map *newmap;
+	Map *newmap;									/* Map object to be returned */
 	for (int i = 0; i < 2; i++) {
 		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {
-			if (this->exit[i].link == 0) {
+			if (this->exit[i].link == 0) {			/* If there is no link function creates new map and stores old one in map */
 				newmap = this->newMap(mapOfLevels, player, i);
-				//mvwprintw(game.textWindow, 1, 1, "New map created..."); DEBUG ONLY
 				return newmap;
 			}
-			else if (this->exit[i].link != 0) {
+			else if (this->exit[i].link != 0) {		/* If there is link load or map object and store current */
 				newmap = this->loadMap(mapOfLevels, player, i);
-				//mvwprintw(game.textWindow, 1, 1, "Loading existing map..."); DEBUG ONLY AFFECTED BY SCREEN CLEARING
 				return newmap;
 			}
 		}
