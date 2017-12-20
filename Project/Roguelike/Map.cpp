@@ -118,16 +118,16 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index
 		player->yPos = newmap->exit[0].yPos - 1;
 		player->xPos = newmap->exit[0].xPos;
 	}
-	else if (oldExitX == AREA_MAX_WIDTH) {
+	else if (oldExitX == AREA_MAX_WIDTH - 1) {
 		newmap->exit[0].xPos = 1;
 		newmap->exit[0].yPos = oldExitY;
 		player->yPos = newmap->exit[0].yPos;
-		player->xPos = newmap->exit[0].xPos - 1;
+		player->xPos = newmap->exit[0].xPos + 1;
 	}
-	else if (oldExitY == AREA_MAX_HEIGHT) {
-		newmap->exit[0].yPos = 1;
+	else if (oldExitY == AREA_MAX_HEIGHT - 1) {
+		newmap->exit[0].yPos = 0;
 		newmap->exit[0].xPos = oldExitX;
-		player->yPos = newmap->exit[0].yPos - 1;
+		player->yPos = newmap->exit[0].yPos + 1;
 		player->xPos = newmap->exit[0].xPos;
 	}
 	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;	/* Set new exit position be recognisible tile */
