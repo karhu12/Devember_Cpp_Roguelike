@@ -1,3 +1,4 @@
-﻿  Buffer.cpp
+﻿  Map.cpp
+d:\työpöytä\git\devember\project\roguelike\map.cpp(165): warning C4715: 'Map::returnNewArea': not all control paths return a value
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
   Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)
