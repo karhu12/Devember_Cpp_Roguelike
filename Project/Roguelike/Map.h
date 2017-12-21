@@ -21,4 +21,5 @@ public:
 	Map *newMap(std::map<int, Map *> *zone, character *player, int index);
 	Map *loadMap(std::map<int, Map *> *mapOfLevels, character *player, int index);
 	Map *returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game);
+	void generateMap(int type);
 };
