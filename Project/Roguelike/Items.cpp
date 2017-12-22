@@ -19,5 +19,11 @@ Items Items::generateItem(std::string str) {
 		item.intMod = 0;
 		item.strMod = 0.3;
 	}
+	else if (str == "Dagger") {
+
+	}
+	else if (str == "Two-handed sword") {
+		 
+	}
 	return item;
 }

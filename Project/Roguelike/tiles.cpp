@@ -30,12 +30,12 @@ void defineTiles(Tile tile[]) {
 	tile[3].foregroundColor = COLOR_BLUE;
 	tile[3].backgroundColor = COLOR_BLUE;
 
-	tile[4].tileName = "Mountain";
+	tile[4].tileName = "Mountain wall";
 	tile[4].tileCharacter = '#';
 	tile[4].walkable = false;
 	tile[4].exit = false;
-	tile[4].foregroundColor = COLOR_GREY;
-	tile[4].backgroundColor = COLOR_GREY;
+	tile[4].foregroundColor = COLOR_WHITE;
+	tile[4].backgroundColor = COLOR_BLACK;
 
 	tile[5].tileName = "Rocky terrain";
 	tile[5].tileCharacter = '.';
@@ -44,12 +44,19 @@ void defineTiles(Tile tile[]) {
 	tile[5].foregroundColor = COLOR_WHITE;
 	tile[5].backgroundColor = COLOR_BLACK;
 
-	tile[6].tileName = "Forest exit";
-	tile[6].tileCharacter = '@';
+	tile[6].tileName = "Exit";
+	tile[6].tileCharacter = 'E';
 	tile[6].walkable = true;
 	tile[6].exit = true;
-	tile[6].foregroundColor = COLOR_CYAN;
-	tile[6].backgroundColor = COLOR_GREEN;
+	tile[6].foregroundColor = COLOR_BLACK;
+	tile[6].backgroundColor = COLOR_WHITE;
+
+	tile[7].tileName = "Item";
+	tile[7].tileCharacter = '?';
+	tile[7].walkable = true;
+	tile[7].exit = false;
+	tile[7].foregroundColor = COLOR_YELLOW;
+	tile[7].backgroundColor = COLOR_WHITE;
 
 }
 

@@ -25,27 +25,27 @@ Map *Map::createMap() {											/* Function to create new map */
 				map->exit[i].yPos = 0;
 				do {
 					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
 			}
 			else if (x == 2) {									/* Exit goes to random position on bottom */
 				map->exit[i].yPos = AREA_MAX_HEIGHT - 1;
 				do {
 					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
 			}
 			else if (x == 3) {									/* Exit goes to random position on left side */
 				map->exit[i].xPos = 0;
 				do {
 					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
 			}
 			else {												/* Exit goes to random position on right side */
 				map->exit[i].xPos = AREA_MAX_WIDTH - 1;
 				do {
 					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == FOREST_EXIT);
+				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
 			}
-			map->area[map->exit[i].yPos][map->exit[i].xPos] = FOREST_EXIT;
+			map->area[map->exit[i].yPos][map->exit[i].xPos] = EXIT;
 			if (i == 1) initialized++;
 		}
 	}
@@ -56,27 +56,27 @@ Map *Map::createMap() {											/* Function to create new map */
 			map->exit[1].yPos = 0;
 			do {
 				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
 		}
 		else if (x == 2) {
 			map->exit[1].yPos = AREA_MAX_HEIGHT - 1;
 			do {
 				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
 		}
 		else if (x == 3) {
 			map->exit[1].xPos = 0;
 			do {
 				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
 		}
 		else {
 			map->exit[1].xPos = AREA_MAX_WIDTH - 1;
 			do {
 				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == FOREST_EXIT);
+			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
 		}
-		map->area[map->exit[1].yPos][map->exit[1].xPos] = FOREST_EXIT;
+		map->area[map->exit[1].yPos][map->exit[1].xPos] = EXIT;
 	}
 	return map;
 }
@@ -116,7 +116,7 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index
 		player->yPos = newmap->exit[0].yPos + 1;
 		player->xPos = newmap->exit[0].xPos;
 	}
-	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = FOREST_EXIT;	/* Set new exit position be recognisible tile */
+	newmap->area[newmap->exit[0].yPos][newmap->exit[0].xPos] = EXIT;	/* Set new exit position be recognisible tile */
 	maps++;
 	return newmap;
 }
