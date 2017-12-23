@@ -151,10 +151,10 @@ Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, sta
 }
 
 void Map::generateMap(int type) {
-	if (type == FOREST_AREA  || type == CAVE_AREA) {			/* Generate area depending on parameter */
-		for (int i = 0; i < AREA_MAX_HEIGHT; i++)
+	if (type == FOREST_AREA) {									/* Generate area depending on parameter */
+		for (int i = 0; i < AREA_MAX_HEIGHT; i++)				/* Initialize map with grass values */
 			for (int j = 0; j < AREA_MAX_WIDTH; j++)
-				this->area[i][j] = GRASS;						/* Initialize map with grass values */
+				this->area[i][j] = GRASS;
 		for (int i = 0; i < AREA_MAX_HEIGHT; i++) {				/* Generate borders for the map */
 			for (int j = 0; j < AREA_MAX_WIDTH; j++) {
 				if (i == 0 && j >= 0 && j < AREA_MAX_WIDTH)
@@ -167,11 +167,24 @@ void Map::generateMap(int type) {
 					this->area[i][j] = THICK_FOREST;
 			}
 		}
-		for (int i = randomNumber(0, 10); i < randomNumber(11, 14); i++) {
-			for (int j = randomNumber(0, 20); j < randomNumber(21, 40); j++) {
-				this->area[i][j] = FOREST;
+		short forests = randomNumber(1, 3);						/* Random forest generation */
+		for (int f = 0; f < forests; f++) {
+			short y = randomNumber(2, 14), x = randomNumber(2, 27);
+			for (int i = randomNumber(1, y); i < randomNumber(y + 1, AREA_MAX_HEIGHT - 1); i++) {
+				for (int j = randomNumber(1, x); j < randomNumber(x + 1, AREA_MAX_WIDTH - 1); j++) {
+					this->area[i][j] = FOREST;
+				}
 			}
-		}														/* Random forest generation (no logic) */
+		}
+		short lakes = randomNumber(0, 2);						/* Lake generation WIP */
+		for (int l = 0; l < lakes; l++) {
+			short y = randomNumber(6, AREA_MAX_HEIGHT - 6), x = randomNumber(6, AREA_MAX_WIDTH - 6);
+			for (int i = y - 6; i < y; i++) {
+				for (int j = x - 6; j < x; j++) {
+					this->area[i][j] = LAKE;
+				}
+			}
+		}
 	}
 	/*else if (type == CAVE) {
 
