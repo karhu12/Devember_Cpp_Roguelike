@@ -28,6 +28,15 @@
     <Filter Include="Source Files\Classes\Enemies">
       <UniqueIdentifier>{a8d1673b-2202-47a3-8578-1161fc5456c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Classes\Enemies">
+      <UniqueIdentifier>{0a995fa7-40d0-4226-a2b5-772fa5b50eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Enemies\Base">
+      <UniqueIdentifier>{6abbd2ab-bd4a-4178-91c5-5a663fb8a140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Enemies\Base">
+      <UniqueIdentifier>{44bed4ae-487f-4ddf-acf2-efdf0ce2ea1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -57,11 +66,11 @@
     <ClInclude Include="general.h">
       <Filter>Header Files\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Items.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Header Files\Classes\Enemies\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +98,11 @@
     <ClCompile Include="general.cpp">
       <Filter>Source Files\Functions</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Items.cpp">
       <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files\Classes\Enemies\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

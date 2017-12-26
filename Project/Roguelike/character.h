@@ -17,8 +17,8 @@ public:
 	char input;													/* Used for player input with getch */
 	chtype playerCharacter;										/* Tile representing player */
 	Items mainHand, offHand;
-	bool twoHand;
-	std::map<int, Items> itemMap;
+	short items;
+	std::map<int, Items *> itemMap;
 	int playerMovement(Map *map, Tile tile[], char input);		/* Player functions */
 	static character createPlayer();
 };

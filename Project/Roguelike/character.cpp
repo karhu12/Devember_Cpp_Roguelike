@@ -2,6 +2,7 @@
 #include "character.h"
 #include "tiles.h"
 #include "Map.h"
+#include "Items.h"
 
 character character::createPlayer() {			/* Initializes the values of player object */
 	character player;
@@ -17,8 +18,9 @@ character character::createPlayer() {			/* Initializes the values of player obje
 	player.accuracy = 80;
 	player.xPos = 30;
 	player.yPos = 9;
-	player.mainHand = player.generateItem("Barehand");
-	player.offHand = player.generateItem("Barehand");
+	player.items = 0;
+	player.mainHand = player.generateItem(BAREHAND);
+	player.offHand = player.generateItem(BAREHAND);
 	player.playerCharacter = 'P';
 	player.foregroundColor = COLOR_CYAN;
 	return player;

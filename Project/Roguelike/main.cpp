@@ -6,7 +6,7 @@
 #include "enemy.h"
 
 int main() { 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	state game;										/* Initialize game state object */
 	character player = character::createPlayer();	/* Create player object with certain parameters */
 	std::map<int, Map *> *mapOfLevels 
@@ -29,6 +29,11 @@ int main() {
 		if (tile[map->area[player.yPos][player.xPos]].exit == true) {	/* If player steps into exit */
 			map = map->returnNewArea(&player, mapOfLevels, game);		/* New zone is created or old one loaded */
 		}
+		else if (tile[map->area[player.yPos][player.xPos]].tileName == "Item") {
+			Items *item = new Items;									/* When player finds item spawn it generates new item and stores it in item map */
+			item->generateItem(randomNumber(MIN_ITEM, MAX_ITEM));
+			(player.itemMap)[player.items] = item;
+		}
 		else if (game.lastCommand == "Movement") {						/* On player movement chance to start random encounter */
 			if (checkForEncounter() == true) {							/* If encounter happens */
 				game.drawGame(map, tile, &player);						/* Redraw map with player on new position*/
@@ -36,7 +41,6 @@ int main() {
 			}
 		}
 	}
-	game.bufferRelease(&game);
-													/* Release window buffer memory */
+	game.bufferRelease(&game);											/* Release window buffer memory */
 	return 0;
 }

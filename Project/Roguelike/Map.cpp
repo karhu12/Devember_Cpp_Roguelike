@@ -8,12 +8,12 @@ enum terrainType{ FOREST_AREA = 0, CAVE_AREA = 1};
 Map *Map::createMap() {											/* Function to create new map */
 	Map *map = new Map;
 	static short initialized = 0;								/* Used to intialize first time in certain fashion */
-	int type = randomNumber(0, 1);								/* Generate one of 2 type map*/
+	int type = randomNumber(0, 1);										/* Generate one of 2 type map*/
 	if (type == FOREST_AREA) {									/* Generate forest */
 		map->generateMap(FOREST_AREA);
 	}
 	else if (type == CAVE_AREA) {								/* Generate cave */
-		map->generateMap(FOREST_AREA);
+		map->generateMap(CAVE_AREA);
 	}
 
 	if (initialized == 0) {										/* First time setup for exits */
@@ -167,7 +167,7 @@ void Map::generateMap(int type) {
 					this->area[i][j] = THICK_FOREST;
 			}
 		}
-		short forests = randomNumber(1, 3);						/* Random forest generation */
+		short forests = randomNumber(2, 4);						/* Random forest generation */
 		for (int f = 0; f < forests; f++) {
 			short y = randomNumber(2, 14), x = randomNumber(2, 27);
 			for (int i = randomNumber(1, y); i < randomNumber(y + 1, AREA_MAX_HEIGHT - 1); i++) {
@@ -178,15 +178,37 @@ void Map::generateMap(int type) {
 		}
 		short lakes = randomNumber(0, 2);						/* Lake generation WIP */
 		for (int l = 0; l < lakes; l++) {
-			short y = randomNumber(6, AREA_MAX_HEIGHT - 6), x = randomNumber(6, AREA_MAX_WIDTH - 6);
-			for (int i = y - 6; i < y; i++) {
+			short y = randomNumber(4, AREA_MAX_HEIGHT - 4), x = randomNumber(6, AREA_MAX_WIDTH - 6);
+			for (int i = y - 4; i < y; i++) {
 				for (int j = x - 6; j < x; j++) {
 					this->area[i][j] = LAKE;
 				}
 			}
 		}
+		if (randomNumber(0, 1) == 1) {
+			short y = randomNumber(0,AREA_MAX_HEIGHT),x = randomNumber(0,AREA_MAX_WIDTH);
+			this->area[y][x] = ITEM;
+		}
 	}
-	/*else if (type == CAVE) {
-
-	} WIP */
+	else if (type == CAVE_AREA) {
+		for (int i = 0; i < AREA_MAX_HEIGHT; i++)				/* Initialize map with rock values */
+			for (int j = 0; j < AREA_MAX_WIDTH; j++)
+				this->area[i][j] = ROCKY_TERRAIN;
+		for (int i = 0; i < AREA_MAX_HEIGHT; i++) {				/* Generate borders for the map */
+			for (int j = 0; j < AREA_MAX_WIDTH; j++) {
+				if (i == 0 && j >= 0 && j < AREA_MAX_WIDTH)
+					this->area[i][j] = MOUNTAIN;
+				if (i == AREA_MAX_HEIGHT - 1 && j >= 0 && j < AREA_MAX_WIDTH)
+					this->area[i][j] = MOUNTAIN;
+				if (j == 0 && i >= 0 && i < AREA_MAX_HEIGHT)
+					this->area[i][j] = MOUNTAIN;
+				if (j == AREA_MAX_WIDTH - 1 && i >= 0 && i < AREA_MAX_HEIGHT)
+					this->area[i][j] = MOUNTAIN;
+			}
+		}
+		if (randomNumber(0, 1) == 1) {
+			short y = randomNumber(0, AREA_MAX_HEIGHT), x = randomNumber(0, AREA_MAX_WIDTH);
+			this->area[y][x] = ITEM;
+		}
+	}
 }
