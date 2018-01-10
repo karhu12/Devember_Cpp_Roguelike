@@ -1,2 +1,10 @@
-﻿  main.cpp
+﻿  Buffer.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  state.cpp
+  main.cpp
+  enemy.cpp
+  character.cpp
+  Map.cpp
+  Items.cpp
   Roguelike.vcxproj -> C:\Users\shyle\Desktop\Git\Devember\Project\Roguelike\Debug\Roguelike.exe

@@ -4,26 +4,24 @@
 #include "Map.h"
 #include "Items.h"
 
-character character::createPlayer() {			/* Initializes the values of player object */
-	character player;
-	player.level = 1;
-	player.health = 100;
-	player.experience = 0;
-	player.strength = 10;
-	player.dexterity = 10;
-	player.intelligence = 10;
-	player.accuracy = 95;
-	player.minDamage = 2;
-	player.maxDamage = 8;
-	player.accuracy = 80;
-	player.xPos = 30;
-	player.yPos = 9;
-	player.items = 0;
-	player.mainHand = player.generateItem(BAREHAND);
-	player.offHand = player.generateItem(BAREHAND);
-	player.playerCharacter = 'P';
-	player.foregroundColor = COLOR_CYAN;
-	return player;
+character::character() {
+	level = 1;
+	health = 100;
+	experience = 0;
+	strength = 10;
+	dexterity = 10;
+	intelligence = 10;
+	accuracy = 95;
+	minDamage = 2;
+	maxDamage = 8;
+	accuracy = 80;
+	xPos = 30;
+	yPos = 9;
+	items = 0;
+	mainHand = generateItem(BAREHAND);
+	offHand = generateItem(BAREHAND);
+	playerCharacter = 'P';
+	foregroundColor = COLOR_CYAN;
 }
 
 int character::playerMovement(Map *map, Tile tile[], char input) {

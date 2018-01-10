@@ -8,6 +8,7 @@ class Map;
 
 class character: public Items {
 public:
+	character();
 	short health, level, experience;							/* Generic propertys of player */
 	short strength, dexterity, intelligence;
 	short xPos, yPos;											/* Players x,y position in area */
@@ -20,5 +21,4 @@ public:
 	short items;
 	std::map<int, Items *> itemMap;
 	int playerMovement(Map *map, Tile tile[], char input);		/* Player functions */
-	static character createPlayer();
 };

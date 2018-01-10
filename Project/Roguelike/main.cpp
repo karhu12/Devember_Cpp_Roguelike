@@ -8,7 +8,7 @@
 int main() { 
 	srand((unsigned int)time(NULL));
 	state game;										/* Initialize game state object */
-	character player = character::createPlayer();	/* Create player object with certain parameters */
+	character player;								/* Create player object with certain parameters */
 	std::map<int, Map *> *mapOfLevels 
 	= new std::map<int, Map *>;						/* Dynamic map pointer that stores map pointers*/
 	Map *map = Map::createMap();					/* Create map object */
