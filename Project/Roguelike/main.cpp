@@ -18,9 +18,9 @@ int main() {
 	curs_set(0);									/* Hide cursor */
 	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */
 	initializeColors();								/* Start colors and initialize 64 color pairs */
-	game.bufferCreate(&game);						/* Create game windows of approppriate size */
-	game.status = true;
-	while (game.status == true) {										/* game loop which updates every input */
+	game.bufferCreate();							/* Create game windows of approppriate size */
+	game.setStatus(true);
+	while (game.getStatus() == true) {									/* game loop which updates every input */
 		game.drawText();												/* Draw text window content */
 		game.drawStatus(&player);										/* Draw all status window content */
 		game.drawGame(map, tile, &player);								/* Draw game screen depending on current map */
@@ -41,6 +41,6 @@ int main() {
 			}
 		}
 	}
-	game.bufferRelease(&game);											/* Release window buffer memory */
+	game.bufferRelease();											/* Release window buffer memory */
 	return 0;
 }

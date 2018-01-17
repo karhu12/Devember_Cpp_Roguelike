@@ -6,36 +6,45 @@
 #include "general.h"
 #include "enemy.h"
 
-void state::bufferCreate(state *game) {
-	game->statusWindow = newwin(STATUS_SCREEN_HEIGHT, STATUS_SCREEN_WIDTH, 0, 0);
-	game->gameWindow = newwin(AREA_MAX_HEIGHT, AREA_MAX_WIDTH, 1, STATUS_SCREEN_WIDTH + 1);
-	game->textWindow = newwin(TEXT_SCREEN_HEIGHT, TEXT_SCREEN_WIDTH, STATUS_SCREEN_HEIGHT, 0);
+void state::bufferCreate() {
+	statusWindow = newwin(STATUS_SCREEN_HEIGHT, STATUS_SCREEN_WIDTH, 0, 0);
+	gameWindow = newwin(AREA_MAX_HEIGHT, AREA_MAX_WIDTH, 1, STATUS_SCREEN_WIDTH + 1);
+	textWindow = newwin(TEXT_SCREEN_HEIGHT, TEXT_SCREEN_WIDTH, STATUS_SCREEN_HEIGHT, 0);
 }
 
-void state::bufferRelease(state *game) {
-	delwin(game->statusWindow);
-	delwin(game->gameWindow);
-	delwin(game->textWindow);
+void state::bufferRelease() {
+	delwin(statusWindow);
+	delwin(gameWindow);
+	delwin(textWindow);
 	endwin();									/* free every windows buffer memory */
+}
+
+bool state::getStatus() {
+	return status;
+}
+
+void state::setStatus(bool newStatus) {
+	status = newStatus;
 }
 
 void state::command(char cmd, character *player, Map *map, Tile tile[]) {
 	if (cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd') {
 		if (player->playerMovement(map, tile, cmd) == 1)
-			this->lastCommand = "Movement";
+			lastCommand = "Movement";
 		else
-			this->lastCommand = "Invalid movement";
+			lastCommand = "Invalid movement";
 	}
 	else if (cmd == 'h') {
-		this->listCommands();
-		this->lastCommand = "Help";
+		listCommands();
+		lastCommand = "Help";
 	}
 	else if (cmd == 'q') {
-		this->status = false;
-		this->lastCommand = "Quit";
-
+		status = false;
+		lastCommand = "Quit";
 	}
 }
+
+
 
 void state::enemyEncounter(character *player) {
 	short roll;												/* Variable to store hit roll (1/100) */
@@ -217,7 +226,7 @@ void state::enemyEncounter(character *player) {
 							mvwprintw(this->gameWindow, 27, 1, "GAME OVER");
 							wgetch(this->gameWindow);
 							encounter = false;
-							this->status = false;
+							status = false;
 							break;
 						}
 					}
