@@ -1,3 +1,17 @@
-﻿  main.cpp
-  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
-  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)
+﻿  stdafx.cpp
+  tiles.cpp
+  state.cpp
+c:\users\shyle\desktop\git\devember\project\roguelike\state.cpp(132): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+c:\users\shyle\desktop\git\devember\project\roguelike\state.cpp(133): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+c:\users\shyle\desktop\git\devember\project\roguelike\state.cpp(134): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+  main.cpp
+  general.cpp
+  enemy.cpp
+  character.cpp
+  Map.cpp
+  Items.cpp
+  Buffer.cpp
+  Generating Code...
+c:\users\shyle\desktop\git\devember\project\roguelike\map.cpp(151): warning C4715: 'Map::returnNewArea': not all control paths return a value
+c:\users\shyle\desktop\git\devember\project\roguelike\character.cpp(81): warning C4715: 'character::playerMovement': not all control paths return a value
+  Roguelike.vcxproj -> C:\Users\shyle\Desktop\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
