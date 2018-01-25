@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "Buffer.h"
-#include "general.h"
+#include "buffer.h"
 
-void Buffer::drawGame(Map *map, Tile tile[], character *player) {
+void Buffer::drawGame(Map *map, Tile tile[], Player *player) {
 	int x;
 	for (int i = 0; i < AREA_MAX_HEIGHT; i++) {					/* Nestedloop to start from 0,0 and end at last coordinate*/
 		for (int j = 0; j < AREA_MAX_WIDTH; j++) {
@@ -27,6 +26,19 @@ void Buffer::drawGame(Map *map, Tile tile[], character *player) {
 	wrefresh(gameWindow);									/* Refresh buffer */
 }
 
+void Buffer::createBuffer() {
+	statusWindow = newwin(STATUS_SCREEN_HEIGHT, STATUS_SCREEN_WIDTH, 0, 0);
+	gameWindow = newwin(AREA_MAX_HEIGHT, AREA_MAX_WIDTH, 1, STATUS_SCREEN_WIDTH + 1);
+	textWindow = newwin(TEXT_SCREEN_HEIGHT, TEXT_SCREEN_WIDTH, STATUS_SCREEN_HEIGHT, 0);
+}
+
+void Buffer::releaseBuffer() {
+	delwin(statusWindow);
+	delwin(gameWindow);
+	delwin(textWindow);
+	endwin();									/* free every windows buffer memory */
+}
+
 void Buffer::listCommands() {
 	noecho();
 	attron(A_BOLD);
@@ -45,7 +57,7 @@ void Buffer::listCommands() {
 	echo();
 }
 
-void Buffer::drawStatus(character * player) {	/* Draw player status */
+void Buffer::drawStatus(Player * player) {	/* Draw player status */
 	wclear(statusWindow);
 	box(statusWindow, ACS_VLINE, ACS_HLINE);
 	wattron(statusWindow, A_BOLD);
@@ -89,4 +101,21 @@ void Buffer::drawEncounter() {
 	wmove(gameWindow, 24, 1);
 	whline(gameWindow, ACS_HLINE, AREA_MAX_WIDTH - 2);
 	wrefresh(gameWindow);
+}
+
+void Buffer::listEnemies(Enemy *enemy, short enemys) {
+	wmove(gameWindow, 2, 2);
+	for (int i = 0; i < enemys; i++) {				/* List enemies */
+		wprintw(gameWindow, "Enemy");
+		wColorOn(gameWindow, COLOR_CYAN, COLOR_BLACK);
+		wprintw(gameWindow, " %3d ", i + 1);
+		wColorOff(gameWindow, COLOR_CYAN, COLOR_BLACK);
+	}
+	wmove(gameWindow, 3, 2);
+	for (int i = 0; i < enemys; i++) {
+		wprintw(gameWindow, "Health");
+		wColorOn(gameWindow, COLOR_RED, COLOR_BLACK);
+		wprintw(gameWindow, " %d ", enemy[i].health);
+		wColorOff(gameWindow, COLOR_RED, COLOR_BLACK);
+	}
 }

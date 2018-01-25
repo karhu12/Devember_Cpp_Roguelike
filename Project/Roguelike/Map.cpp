@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Map.h"
-#include "tiles.h"
-#include "general.h"
 
 enum terrainType{ FOREST_AREA = 0, CAVE_AREA = 1};
 
@@ -79,7 +77,7 @@ Map::Map() {
 	}
 }
 
-Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index) {
+Map *Map::newMap(std::map<int, Map *> *mapOfLevels, Player *player, int index) {
 	Map *newmap;										/* New map to be returned */
 	static short maps = 1, oldMapId;					/* maps tracked statically */
 	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;	/* Set old x and y exit on variables*/
@@ -118,7 +116,7 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index
 	return newmap;
 }
 
-Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int index) {
+Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, Player * player, int index) {
 	Map *map;
 	short selectedMap = this->exit[index].link;		/* Map to be loadede from exit link */
 	short oldExitX = this->exit[index].xPos, oldExitY = this->exit[index].yPos;
@@ -131,7 +129,7 @@ Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int ind
 	return map;	
 }
 
-Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels) {
+Map *Map::returnNewArea(Player *player, std::map<int, Map*> *mapOfLevels) {
 	Map *newmap;									/* Map object to be returned */
 	for (int i = 0; i < 2; i++) {
 		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {

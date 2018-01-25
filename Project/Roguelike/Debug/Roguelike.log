@@ -1,2 +1,6 @@
-﻿  main.cpp
-  Roguelike.vcxproj -> C:\Users\shyle\Desktop\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
+﻿  state.cpp
+d:\työpöytä\git\devember\project\roguelike\state.cpp(144): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+d:\työpöytä\git\devember\project\roguelike\state.cpp(145): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+d:\työpöytä\git\devember\project\roguelike\state.cpp(146): warning C4244: '+=': conversion from 'double' to 'short', possible loss of data
+  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.exe
+  Roguelike.vcxproj -> D:\Työpöytä\Git\Devember\Project\Roguelike\Debug\Roguelike.pdb (Partial PDB)

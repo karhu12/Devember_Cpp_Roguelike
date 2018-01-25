@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Items.h"
-#include "general.h"
 
 
 Items Items::generateItem(int type) {

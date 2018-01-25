@@ -1,23 +1,34 @@
 #pragma once
 
-#include "Buffer.h"
+#include "stdafx.h"
+#include "buffer.h"
+#include "Player.h"
+#include "Map.h"
+#include "tiles.h"
+#include "general.h"
+#include "enemy.h"
 
-class state : public Buffer {
+class Map;
+class Player;
+class Buffer;
+
+class state {
 public:
 	state();
 	~state();
 	std::string lastCommand;
-	void bufferCreate();					/* Create window buffers */
-	void bufferRelease();					/* Release buffer memory */
-	void command(char cmd, character *player, Map *map, Tile tile[]);
-	void enemyEncounter(character *player);
+
+	void command(char cmd, Player *player, Map *map, Tile tile[]);
+	void enemyEncounter(Player *player);
 	bool getStatus();
 	void setStatus(bool);
 	void gameLoop();
-	Map *map;
-	std::map<int, Map *> *mapOfLevels;
-	character player;						/* Create player object with certain parameters */
+	
 
 private:
 	bool status;							/* Game running state */
+	Map *map;
+	std::map<int, Map *> *mapOfLevels;
+	Player *player;						/* Create player object with certain parameters */
+	Buffer *buffer;
 };
