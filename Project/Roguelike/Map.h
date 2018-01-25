@@ -1,5 +1,9 @@
 #pragma once
-#include "character.h"
+
+#include "stdafx.h"
+#include "Map.h"
+#include "Player.h"
+#include "general.h"
 
 struct Trigger {
 	short xPos, yPos;
@@ -7,18 +11,18 @@ struct Trigger {
 	std::string type;
 };
 
-class character;
-class state;
+class Player;
 struct Tile;
 
 class Map {
 public:
+	Map();
 	std::string environment;						/* Environment type can be used in generation */
 	short area[AREA_MAX_HEIGHT][AREA_MAX_WIDTH];	/* Two dimensional array to store all the tiles in map */
 	short id;										/* Used to locate map */
-	static Map *createMap();
 	Trigger exit[2];
-	Map *newMap(std::map<int, Map *> *zone, character *player, int index);
-	Map *loadMap(std::map<int, Map *> *mapOfLevels, character *player, int index);
-	Map *returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game);
+	Map *newMap(std::map<int, Map *> *zone, Player *player, int index);
+	Map *loadMap(std::map<int, Map *> *mapOfLevels, Player *player, int index);
+	Map *returnNewArea(Player *player, std::map<int, Map*> *mapOfLevels);
+	void generateMap(int type);
 };

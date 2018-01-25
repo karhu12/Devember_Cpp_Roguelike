@@ -148,7 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="character.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="general.h" />
     <ClInclude Include="Items.h" />
@@ -160,7 +160,7 @@
     <ClInclude Include="Map.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="character.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="general.cpp" />
     <ClCompile Include="Items.cpp" />

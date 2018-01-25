@@ -25,8 +25,11 @@ void initializeColors() {
 }
 
 int randomNumber(int minValue, int maxValue) {		/* Return random number*/
-	int number = rand() % (maxValue - minValue) + minValue;
-	return number;
+	if (minValue == 0 && maxValue == 1) {			/* return 0/1 */
+		return  (rand() % 2 + 1) / 2;
+	}
+	maxValue -= minValue;
+	return (rand() % maxValue + minValue);			/* return max/min */
 }
 
 bool checkForEncounter() {
