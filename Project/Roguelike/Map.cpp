@@ -5,80 +5,78 @@
 
 enum terrainType{ FOREST_AREA = 0, CAVE_AREA = 1};
 
-Map *Map::createMap() {											/* Function to create new map */
-	Map *map = new Map;
+Map::Map() {
 	static short initialized = 0;								/* Used to intialize first time in certain fashion */
 	int type = randomNumber(0, 1);										/* Generate one of 2 type map*/
 	if (type == FOREST_AREA) {									/* Generate forest */
-		map->generateMap(FOREST_AREA);
+		generateMap(FOREST_AREA);
 	}
 	else if (type == CAVE_AREA) {								/* Generate cave */
-		map->generateMap(CAVE_AREA);
+		generateMap(CAVE_AREA);
 	}
 
 	if (initialized == 0) {										/* First time setup for exits */
-		map->id = 1;
+		id = 1;
 		for (int i = 0; i < 2; i++) {							/* Loop for creating 2 exits on first area */
 			int x = randomNumber(1, 4);							/* Randomize if exits go on top/bottom or sides */
-			map->exit[i].link = 0;
+			exit[i].link = 0;
 			if (x == 1) {										/* Exit goes to random position on top */
-				map->exit[i].yPos = 0;
+				exit[i].yPos = 0;
 				do {
-					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
+					exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+				} while (area[exit[i].yPos][exit[i].xPos] == EXIT);
 			}
 			else if (x == 2) {									/* Exit goes to random position on bottom */
-				map->exit[i].yPos = AREA_MAX_HEIGHT - 1;
+				exit[i].yPos = AREA_MAX_HEIGHT - 1;
 				do {
-					map->exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
+					exit[i].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+				} while (area[exit[i].yPos][exit[i].xPos] == EXIT);
 			}
 			else if (x == 3) {									/* Exit goes to random position on left side */
-				map->exit[i].xPos = 0;
+				exit[i].xPos = 0;
 				do {
-					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
+					exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+				} while (area[exit[i].yPos][exit[i].xPos] == EXIT);
 			}
 			else {												/* Exit goes to random position on right side */
-				map->exit[i].xPos = AREA_MAX_WIDTH - 1;
+				exit[i].xPos = AREA_MAX_WIDTH - 1;
 				do {
-					map->exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-				} while (map->area[map->exit[i].yPos][map->exit[i].xPos] == EXIT);
+					exit[i].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+				} while (area[exit[i].yPos][exit[i].xPos] == EXIT);
 			}
-			map->area[map->exit[i].yPos][map->exit[i].xPos] = EXIT;
+			area[exit[i].yPos][exit[i].xPos] = EXIT;
 			if (i == 1) initialized++;
 		}
 	}
 	else {														/* Normal setup for exits*/
 		int x = randomNumber(1, 4);								/* Same random setup than before but now for only one exit */
-		map->exit[1].link = 0;
+		exit[1].link = 0;
 		if (x == 1) {
-			map->exit[1].yPos = 0;
+			exit[1].yPos = 0;
 			do {
-				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
+				exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+			} while (area[exit[1].yPos][exit[1].xPos] == EXIT);
 		}
 		else if (x == 2) {
-			map->exit[1].yPos = AREA_MAX_HEIGHT - 1;
+			exit[1].yPos = AREA_MAX_HEIGHT - 1;
 			do {
-				map->exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
+				exit[1].xPos = randomNumber(1, AREA_MAX_WIDTH - 1);
+			} while (area[exit[1].yPos][exit[1].xPos] == EXIT);
 		}
 		else if (x == 3) {
-			map->exit[1].xPos = 0;
+			exit[1].xPos = 0;
 			do {
-				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
+				exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+			} while (area[exit[1].yPos][exit[1].xPos] == EXIT);
 		}
 		else {
-			map->exit[1].xPos = AREA_MAX_WIDTH - 1;
+			exit[1].xPos = AREA_MAX_WIDTH - 1;
 			do {
-				map->exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
-			} while (map->area[map->exit[1].yPos][map->exit[1].xPos] == EXIT);
+				exit[1].yPos = randomNumber(1, AREA_MAX_HEIGHT - 1);
+			} while (area[exit[1].yPos][exit[1].xPos] == EXIT);
 		}
-		map->area[map->exit[1].yPos][map->exit[1].xPos] = EXIT;
+		area[exit[1].yPos][exit[1].xPos] = EXIT;
 	}
-	return map;
 }
 
 Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index) {
@@ -88,8 +86,7 @@ Map *Map::newMap(std::map<int, Map *> *mapOfLevels, character *player, int index
 	this->exit[index].link = maps + 1;					/* Current maps link will be the map to be created */
 	oldMapId = this->id;								/* Old maps id is current map */
 	(*mapOfLevels)[this->id] = this;					/* Store current object pointer in map */
-	newmap = new Map;
-	newmap = Map::createMap();							/* Create fresh map */
+	newmap = new Map;									/* Create fresh map */
 	newmap->exit[0].link = oldMapId;					/* One exit will have the connection to old exit */
 	newmap->id = maps + 1;								/* New map id will be the same as link on old map */
 	if (oldExitX == 0) {								/* Change player position and new exit position depending on old position */
@@ -134,7 +131,7 @@ Map *Map::loadMap(std::map<int, Map *> *mapOfLevels, character * player, int ind
 	return map;	
 }
 
-Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels, state game) {
+Map *Map::returnNewArea(character *player, std::map<int, Map*> *mapOfLevels) {
 	Map *newmap;									/* Map object to be returned */
 	for (int i = 0; i < 2; i++) {
 		if (this->exit[i].xPos == player->xPos && this->exit[i].yPos == player->yPos) {

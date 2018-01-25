@@ -6,6 +6,51 @@
 #include "general.h"
 #include "enemy.h"
 
+state::state() {
+	map = new Map;									/* Create map object */
+	mapOfLevels = new std::map<int, Map *>;			/* Dynamic map pointer that stores map pointers*/
+}
+
+state::~state() {
+	delete map;
+	delete mapOfLevels;
+	map = NULL;
+	mapOfLevels = NULL;
+}
+
+void state::gameLoop() {
+	Tile tile[MAX_TILES];
+	defineTiles(tile);								/* Create tile struct array with all known tile values */
+	initscr();										/* Start curses */
+	curs_set(0);									/* Hide cursor */
+	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */
+	initializeColors();								/* Start colors and initialize 64 color pairs */
+	bufferCreate();							/* Create game windows of approppriate size */
+	setStatus(true);
+	while (getStatus() == true) {									/* game loop which updates every input */
+		drawText();												/* Draw text window content */
+		drawStatus(&player);										/* Draw all status window content */
+		drawGame(map, tile, &player);								/* Draw game screen depending on current map */
+		player.input = mvwgetch(textWindow, 3, 1);					/* Get input from player */
+		command(player.input, &player, map, tile);					/* Execute command depending on input */
+		if (tile[map->area[player.yPos][player.xPos]].exit == true) {	/* If player steps into exit */
+			map = map->returnNewArea(&player, mapOfLevels);		/* New zone is created or old one loaded */
+		}
+		else if (tile[map->area[player.yPos][player.xPos]].tileName == "Item") {
+			Items *item = new Items;									/* When player finds item spawn it generates new item and stores it in item map */
+			item->generateItem(randomNumber(MIN_ITEM, MAX_ITEM));
+			(player.itemMap)[player.items] = item;
+		}
+		else if (lastCommand == "Movement") {						/* On player movement chance to start random encounter */
+			if (checkForEncounter() == true) {							/* If encounter happens */
+				drawGame(map, tile, &player);						/* Redraw map with player on new position*/
+				enemyEncounter(&player);							/* Start encounter */
+			}
+		}
+	}
+	bufferRelease();											/* Release window buffer memory */
+}
+
 void state::bufferCreate() {
 	statusWindow = newwin(STATUS_SCREEN_HEIGHT, STATUS_SCREEN_WIDTH, 0, 0);
 	gameWindow = newwin(AREA_MAX_HEIGHT, AREA_MAX_WIDTH, 1, STATUS_SCREEN_WIDTH + 1);
