@@ -3,7 +3,7 @@
 
 Player::Player() {
 	level = 1;
-	health = 100;
+	health = 25;
 	experience = 0;
 	strength = 10;
 	dexterity = 10;
@@ -40,6 +40,7 @@ int Player::playerMovement(Map *map, Tile tile[], char input) {
 		if (this->xPos > 0) {
 			if (tile[map->area[this->yPos][this->xPos + -1]].walkable == true) {
 				this->xPos -= 1;
+				return 1;
 			}
 			else {
 				return 0;
@@ -53,6 +54,7 @@ int Player::playerMovement(Map *map, Tile tile[], char input) {
 		if (this->yPos > 0) {
 			if (tile[map->area[this->yPos - 1][this->xPos]].walkable == true)  {
 				this->yPos -= 1;
+				return 1;
 			}
 			else {
 				return 0;
@@ -66,6 +68,7 @@ int Player::playerMovement(Map *map, Tile tile[], char input) {
 		if (this->yPos < AREA_MAX_HEIGHT - 1) {
 			if (tile[map->area[this->yPos + 1][this->xPos]].walkable == true) {
 				this->yPos += 1;
+				return 1;
 			}
 			else {
 				return 0;
@@ -75,4 +78,9 @@ int Player::playerMovement(Map *map, Tile tile[], char input) {
 			return 0;
 		}
 	}
+}
+
+char Player::getPlayerInput(Buffer *buffer) {
+	input = mvwgetch(buffer->textWindow, 3, 1);
+	return input;
 }

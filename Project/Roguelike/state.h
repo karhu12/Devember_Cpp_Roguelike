@@ -18,12 +18,12 @@ public:
 	~state();
 	std::string lastCommand;
 
-	void command(char cmd, Player *player, Map *map, Tile tile[]);
+	void executeInput(Player *player, Map *map, Tile tile[]);
 	void enemyEncounter(Player *player);
-	bool getStatus();
+	bool gameStatus();
 	void setStatus(bool);
 	void gameLoop();
-	
+	void initGame();
 
 private:
 	bool status;							/* Game running state */
@@ -31,4 +31,5 @@ private:
 	std::map<int, Map *> *mapOfLevels;
 	Player *player;						/* Create player object with certain parameters */
 	Buffer *buffer;
+	Tile tile[MAX_TILES];
 };

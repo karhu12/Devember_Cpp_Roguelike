@@ -33,13 +33,13 @@ int randomNumber(int minValue, int maxValue) {		/* Return random number*/
 }
 
 bool checkForEncounter() {
-	static int chance = 95;							/* 5% chance to start random encounter */
+	static double chance = 99;						/* 1% chance to start random encounter at start*/
 	if (randomNumber(1, 100) > chance) {			/* If encounter happens reset chance */
-		chance = 95;
+		chance = 97.5;
 		return true;
 	}
 	else {
-		chance--;									/* Increases the chance to find encounter by 1% everytime you move */
+		chance -= 0.2;								/* Increases the chance to find encounter by 0.2% everytime you move */
 		return false;
 	}
 }

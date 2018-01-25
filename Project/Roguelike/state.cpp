@@ -6,14 +6,14 @@
 #include "general.h"
 #include "enemy.h"
 
-state::state() {
-	map = new Map;									/* Create map object */
-	mapOfLevels = new std::map<int, Map *>;			/* Dynamic map pointer that stores map pointers*/
+state::state() { /* Create dynamic objects and map */
+	map = new Map;
 	player = new Player;
 	buffer = new Buffer;
+	mapOfLevels = new std::map<int, Map *>;
 }
 
-state::~state() {
+state::~state() {	/* Delete pointer memory and NULL them */
 	delete map;
 	delete mapOfLevels;
 	delete player;
@@ -24,40 +24,44 @@ state::~state() {
 	buffer = NULL;
 }
 
-void state::gameLoop() {
-	Tile tile[MAX_TILES];
+void state::initGame() {
 	defineTiles(tile);								/* Create tile struct array with all known tile values */
 	initscr();										/* Start curses */
 	curs_set(0);									/* Hide cursor */
 	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */
-	buffer->createBuffer();
+	buffer->createBuffer();							/* Creates 3 windows to buffer */
 	initializeColors();								/* Start colors and initialize 64 color pairs */
-	setStatus(true);
-	while (getStatus() == true) {									/* game loop which updates every input */
+	setStatus(true);								/* Sets main loops status as true */
+}
+
+void state::gameLoop() {
+	initGame();															/* Initialize required assets for game*/
+	while (gameStatus()) {												/* game loop which updates every input */
 		buffer->drawText();												/* Draw text window content */
 		buffer->drawStatus(player);										/* Draw all status window content */
-		buffer->drawGame(map, tile, player);								/* Draw game screen depending on current map */
-		player->input = mvwgetch(buffer->textWindow, 3, 1);					/* Get input from player */
-		command(player->input, player, map, tile);					/* Execute command depending on input */
+		buffer->drawGame(map, tile, player);							/* Draw game screen depending on current map */
+		executeInput(player, map, tile);								/* Execute command depending on input */
 		if (tile[map->area[player->yPos][player->xPos]].exit == true) {	/* If player steps into exit */
-			map = map->returnNewArea(player, mapOfLevels);		/* New zone is created or old one loaded */
+			map = map->returnNewArea(player, mapOfLevels);				/* New zone is created or old one loaded */
 		}
-		else if (tile[map->area[player->yPos][player->xPos]].tileName == "Item") {
-			Items *item = new Items;									/* When player finds item spawn it generates new item and stores it in item map */
+		else if (tile[map->area[player->yPos][player->xPos]].tileName == "Item") {	/* If tile on player position is a tile generate new item */
+			/* WIP
+			Items *item = new Items;
 			item->generateItem(randomNumber(MIN_ITEM, MAX_ITEM));
 			(player->itemMap)[player->items] = item;
+			*/
 		}
-		else if (lastCommand == "Movement") {						/* On player movement chance to start random encounter */
-			if (checkForEncounter() == true) {							/* If encounter happens */
-				buffer->drawGame(map, tile, player);						/* Redraw map with player on new position*/
-				enemyEncounter(player);							/* Start encounter */
+		else if (lastCommand == "Movement") {							/* On player movement chance to start random encounter */
+			if (checkForEncounter()) {									/* If encounter happens */
+				buffer->drawGame(map, tile, player);					/* Redraw map with player on new position*/
+				enemyEncounter(player);									/* Start encounter */
 			}
 		}
 	}
-	buffer->releaseBuffer();
+	buffer->releaseBuffer();											/* Release window buffers */
 }
 
-bool state::getStatus() {
+bool state::gameStatus() {
 	return status;
 }
 
@@ -65,8 +69,9 @@ void state::setStatus(bool newStatus) {
 	status = newStatus;
 }
 
-void state::command(char cmd, Player *player, Map *map, Tile tile[]) {
-	if (cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd') {
+void state::executeInput(Player *player, Map *map, Tile tile[]) {
+	char cmd = player->getPlayerInput(buffer);							/* Get player input */
+	if (cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd') {			/* Depending on input execute certain actions */
 		if (player->playerMovement(map, tile, cmd) == 1)
 			lastCommand = "Movement";
 		else
@@ -85,38 +90,38 @@ void state::command(char cmd, Player *player, Map *map, Tile tile[]) {
 
 
 void state::enemyEncounter(Player *player) {
-	short roll;												/* Variable to store hit roll (1/100) */
-	short enemys = randomNumber(1, 3);						/* Generate random number of enemies */
-	Enemy *enemy = new Enemy[enemys];						/* Create enemy objects */
-	bool encounter = true;									/* Boolean for encounter loop */
+	short roll;															/* Variable to store hit roll (1/100) */
+	short enemys = randomNumber(1, 3);									/* Generate random number of enemies */
+	Enemy *enemy = new Enemy[enemys];									/* Create enemy objects */
+	bool encounter = true;												/* Boolean for encounter loop */
 
 	mvwprintw(buffer->textWindow, 1, 1, "You are ambushed by %d enemy!", enemys);
 	wprintw(buffer->textWindow, " Prepare to fight...");
 	wrefresh(buffer->textWindow);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-	while (encounter) {										/* Encounter loop */
+	while (encounter) {													/* Encounter loop */
 		bool validInput, validAttack;
-		bool attemptedFlee = false, fled = false;			/* Booleans for checks */
-		do {												/* Player begins combat */
-			buffer->drawEncounter();							/* Update screen boxes */
+		bool attemptedFlee = false, fled = false;						/* Booleans for checks */
+		do {															/* Player begins combat */
+			buffer->drawEncounter();									/* Update screen boxes */
 			buffer->drawStatus(player);
 			mvwprintw(buffer->gameWindow, 25, 1, "What is your move > ");
 			buffer->listEnemies(enemy, enemys);
-			char action = wgetch(buffer->gameWindow);			/* Prompt players choise and check if its valid */
+			char action = wgetch(buffer->gameWindow);					/* Prompt players choise and check if its valid */
 			int actionToInt;
-			if (action == 'a' || action == 'A') {			/* Attack selection */
+			if (action == 'a' || action == 'A') {						/* Attack selection */
 				do {
 					buffer->drawEncounter();
 					mvwprintw(buffer->gameWindow, 25, 1, "Choose target to attack");
 					buffer->listEnemies(enemy, enemys);
 					action = mvwgetch(buffer->gameWindow, 26, 1);
-					actionToInt = action - 48;				/* Turn char into corresponding int and check if its valid */
-					if (actionToInt > 0 && actionToInt <= enemys) {	/* If choise is one of the enemies */
-						if (enemy[actionToInt - 1].alive == true) {	/* If selected enemy is still alive*/
+					actionToInt = action - 48;							/* Turn char into corresponding int and check if its valid */
+					if (actionToInt > 0 && actionToInt <= enemys) {		/* If choise is one of the enemies */
+						if (enemy[actionToInt - 1].alive == true) {		/* If selected enemy is still alive*/
 							validAttack = true;
 						}
-						else {										/* Else cant attack */
+						else {											/* Else cant attack */
 							buffer->drawEncounter();
 							mvwprintw(buffer->gameWindow, 25, 1, "You can't attack enemy that is dead!");
 							mvwprintw(buffer->gameWindow, 26, 1, "Press any key to continue...");
