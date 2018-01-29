@@ -31,12 +31,12 @@ void state::initGame() {
 	resize_term(SCREEN_HEIGHT, SCREEN_WIDTH);		/* Set initial window size */
 	buffer->createBuffer();							/* Creates 3 windows to buffer */
 	initializeColors();								/* Start colors and initialize 64 color pairs */
-	setStatus(true);								/* Sets main loops status as true */
+	status = true;
 }
 
 void state::gameLoop() {
 	initGame();															/* Initialize required assets for game*/
-	while (gameStatus()) {												/* game loop which updates every input */
+	while (getGameStatus()) {												/* game loop which updates every input */
 		buffer->drawText();												/* Draw text window content */
 		buffer->drawStatus(player);										/* Draw all status window content */
 		buffer->drawGame(map, tile, player);							/* Draw game screen depending on current map */
@@ -45,11 +45,7 @@ void state::gameLoop() {
 			map = map->returnNewArea(player, mapOfLevels);				/* New zone is created or old one loaded */
 		}
 		else if (tile[map->area[player->yPos][player->xPos]].tileName == "Item") {	/* If tile on player position is a tile generate new item */
-			/* WIP
-			Items *item = new Items;
-			item->generateItem(randomNumber(MIN_ITEM, MAX_ITEM));
-			(player->itemMap)[player->items] = item;
-			*/
+			Item *item = new Item;
 		}
 		else if (lastCommand == "Movement") {							/* On player movement chance to start random encounter */
 			if (checkForEncounter()) {									/* If encounter happens */
@@ -61,12 +57,8 @@ void state::gameLoop() {
 	buffer->releaseBuffer();											/* Release window buffers */
 }
 
-bool state::gameStatus() {
+bool state::getGameStatus() {
 	return status;
-}
-
-void state::setStatus(bool newStatus) {
-	status = newStatus;
 }
 
 void state::executeInput(Player *player, Map *map, Tile tile[]) {
@@ -90,7 +82,7 @@ void state::executeInput(Player *player, Map *map, Tile tile[]) {
 
 
 void state::enemyEncounter(Player *player) {
-	short roll;															/* Variable to store hit roll (1/100) */
+	short roll, damage;
 	short enemys = randomNumber(1, 3);									/* Generate random number of enemies */
 	Enemy *enemy = new Enemy[enemys];									/* Create enemy objects */
 	bool encounter = true;												/* Boolean for encounter loop */
@@ -143,14 +135,9 @@ void state::enemyEncounter(Player *player) {
 				buffer->listEnemies(enemy, enemys);
 				wrefresh(buffer->gameWindow);
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-				roll = randomNumber(1, 100);
-				if (roll < player->accuracy + player->mainHand.accuracyBonus + player->offHand.accuracyBonus) {	/* If roll is lower than player accuracy it hits else miss */
-					roll = randomNumber(player->minDamage,  (player->maxDamage + player->mainHand.damageBonus + player->offHand.damageBonus));
-					roll += (player->strength * (player->mainHand.strMod + player->offHand.strMod));
-					roll += (player->dexterity * (player->mainHand.dexMod + player->offHand.dexMod));
-					roll += (player->intelligence * (player->mainHand.intMod + player->offHand.intMod));		/* Calculate damage from weapons mods and base stats */
+				if ((damage = player->playerAttack()) != 0) {
 					buffer->drawEncounter();
-					enemy[actionToInt - 1].health -= roll;
+					enemy[actionToInt - 1].health -= damage;
 					if (enemy[actionToInt - 1].health <= 0) {
 						enemy[actionToInt - 1].alive = false;
 						player->experience += enemy[actionToInt - 1].experienceGiven;
@@ -162,7 +149,7 @@ void state::enemyEncounter(Player *player) {
 					}
 					else {
 						buffer->listEnemies(enemy, enemys);
-						mvwprintw(buffer->gameWindow, 25, 1, "You deal %d damage but the enemy still stands", roll);
+						mvwprintw(buffer->gameWindow, 25, 1, "You deal %d damage but the enemy still stands", damage);
 						wrefresh(buffer->gameWindow);
 						std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 					}

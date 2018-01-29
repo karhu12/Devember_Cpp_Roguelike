@@ -31,11 +31,11 @@
     <Filter Include="Header Files\Classes\Enemies">
       <UniqueIdentifier>{0a995fa7-40d0-4226-a2b5-772fa5b50eae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Classes\Enemies\Base">
-      <UniqueIdentifier>{6abbd2ab-bd4a-4178-91c5-5a663fb8a140}</UniqueIdentifier>
+    <Filter Include="Header Files\Items">
+      <UniqueIdentifier>{79d264ac-e542-4ade-b2df-6c8ab7e99cd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Classes\Enemies\Base">
-      <UniqueIdentifier>{44bed4ae-487f-4ddf-acf2-efdf0ce2ea1c}</UniqueIdentifier>
+    <Filter Include="Source Files\Items">
+      <UniqueIdentifier>{1a9fa780-3a65-4032-b577-2f6cd4f8eaa6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,14 +63,17 @@
     <ClInclude Include="general.h">
       <Filter>Header Files\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="Items.h">
+    <ClInclude Include="Player.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>Header Files\Classes\Enemies\Base</Filter>
+      <Filter>Header Files\Classes\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Classes</Filter>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,14 +98,17 @@
     <ClCompile Include="general.cpp">
       <Filter>Source Files\Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Items.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>Source Files\Classes\Enemies\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files\Classes\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files\Items</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

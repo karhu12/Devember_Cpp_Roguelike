@@ -20,7 +20,7 @@ public:
 
 	void executeInput(Player *player, Map *map, Tile tile[]);
 	void enemyEncounter(Player *player);
-	bool gameStatus();
+	bool getGameStatus();
 	void setStatus(bool);
 	void gameLoop();
 	void initGame();

@@ -15,10 +15,17 @@ Player::Player() {
 	xPos = 30;
 	yPos = 9;
 	items = 0;
-	mainHand = generateItem(BAREHAND);
-	offHand = generateItem(BAREHAND);
+	mainHand = new Item(DEFAULT_WEAPON);
+	offHand = new Item(DEFAULT_WEAPON);
 	playerCharacter = 'P';
 	foregroundColor = COLOR_CYAN;
+}
+
+Player::~Player() {
+	delete mainHand;
+	delete offHand;
+	mainHand = NULL;
+	offHand = NULL;
 }
 
 int Player::playerMovement(Map *map, Tile tile[], char input) {
@@ -83,4 +90,18 @@ int Player::playerMovement(Map *map, Tile tile[], char input) {
 char Player::getPlayerInput(Buffer *buffer) {
 	input = mvwgetch(buffer->textWindow, 3, 1);
 	return input;
+}
+
+int Player::playerAttack() {
+	unsigned short roll = randomNumber(1, 100);
+	short damage;
+	if (roll < accuracy + mainHand->weapon->getAccuracy() + offHand->weapon->getAccuracy()) {	/* If roll is lower than player accuracy it hits else miss */
+		damage = randomNumber(minDamage, (maxDamage + mainHand->weapon->getDamageBonus() + offHand->weapon->getDamageBonus()));
+		mainHand->weapon->addAbilityModifierDamage(damage, strength, dexterity, intelligence);
+		offHand->weapon->addAbilityModifierDamage(damage, strength, dexterity, intelligence);
+	}
+	else {
+		damage = 0;
+	}
+	return damage;
 }

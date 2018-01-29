@@ -14,8 +14,8 @@ struct Tile;
 
 class Buffer {
 public:
-	void createBuffer();												/* Create window buffers */
-	void releaseBuffer();											/* Release buffer memory */
+	void createBuffer();										/* Create window buffers */
+	void releaseBuffer();										/* Release buffer memory */
 	void drawGame(Map *map, Tile tile[], Player *player);		/* Draw game state */
 	void drawStatus(Player * player);							/* Draw status window specific */
 	void drawText();											/* Draw text window base */
