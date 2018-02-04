@@ -21,7 +21,6 @@ public:
 	void executeInput(Player *player, Map *map, Tile tile[]);
 	void enemyEncounter(Player *player);
 	bool getGameStatus();
-	void setStatus(bool);
 	void gameLoop();
 	void initGame();
 

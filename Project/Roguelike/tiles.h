@@ -9,7 +9,7 @@ struct Tile {
 	chtype tileCharacter;
 	bool walkable, exit;
 	short foregroundColor, backgroundColor;
-} ;
+};
 
 void defineTiles(Tile tile[]);
 int returnColorPair(int foreground, int background);

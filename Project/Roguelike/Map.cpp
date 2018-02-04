@@ -184,6 +184,7 @@ void Map::generateMap(int type) {
 			short y = randomNumber(0,AREA_MAX_HEIGHT),x = randomNumber(0,AREA_MAX_WIDTH);
 			this->area[y][x] = ITEM;
 		}
+		defaultTile = GRASS;
 	}
 	else if (type == CAVE_AREA) {
 		for (int i = 0; i < AREA_MAX_HEIGHT; i++)				/* Initialize map with rock values */
@@ -206,4 +207,9 @@ void Map::generateMap(int type) {
 			this->area[y][x] = ITEM;
 		}
 	}
+	defaultTile = ROCKY_TERRAIN;
+}
+
+void Map::changeAreaToDefault(int x, int y) {
+	area[x][y] = defaultTile;
 }

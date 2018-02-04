@@ -75,6 +75,9 @@
     <ClInclude Include="Weapon.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="Consumable.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files\Classes\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Consumable.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
   </ItemGroup>

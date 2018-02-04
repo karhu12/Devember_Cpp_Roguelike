@@ -105,3 +105,9 @@ int Player::playerAttack() {
 	}
 	return damage;
 }
+
+void Player::newItemToInventory() {
+	Item *newItem = new Item;	/* Create new item and place it in players inventory map */
+	itemMap[items] = newItem;
+	items++;
+}

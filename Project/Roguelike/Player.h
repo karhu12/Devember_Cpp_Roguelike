@@ -17,6 +17,7 @@ public:
 	int playerMovement(Map *map, Tile tile[], char input);		/* Player functions */
 	char getPlayerInput(Buffer *buffer);
 	int playerAttack();
+	void newItemToInventory();
 	short health, level, experience;							/* Generic propertys of player */
 	short strength, dexterity, intelligence;
 	short xPos, yPos;											/* Players x,y position in area */

@@ -45,7 +45,9 @@ void state::gameLoop() {
 			map = map->returnNewArea(player, mapOfLevels);				/* New zone is created or old one loaded */
 		}
 		else if (tile[map->area[player->yPos][player->xPos]].tileName == "Item") {	/* If tile on player position is a tile generate new item */
-			Item *item = new Item;
+			player->newItemToInventory();
+			map->changeAreaToDefault(player->yPos, player->xPos);
+			
 		}
 		else if (lastCommand == "Movement") {							/* On player movement chance to start random encounter */
 			if (checkForEncounter()) {									/* If encounter happens */
@@ -93,8 +95,7 @@ void state::enemyEncounter(Player *player) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 	while (encounter) {													/* Encounter loop */
-		bool validInput, validAttack;
-		bool attemptedFlee = false, fled = false;						/* Booleans for checks */
+		bool validInput, validAttack, attemptedFlee = false, fled = false; /* Booleans for checks */
 		do {															/* Player begins combat */
 			buffer->drawEncounter();									/* Update screen boxes */
 			buffer->drawStatus(player);

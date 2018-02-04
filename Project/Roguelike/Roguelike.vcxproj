@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Consumable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="general.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="general.cpp" />

@@ -11,6 +11,7 @@ Item::Item() {
 			break;
 		case CONSUMABLE:
 			type = "Consumable";
+			consumable = new Consumable;
 			break;
 		case SPELL:
 			type = "Spell";
