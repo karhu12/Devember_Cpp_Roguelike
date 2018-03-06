@@ -16,6 +16,7 @@ public:
 	~Player();
 	int playerMovement(Map *map, Tile tile[], char input);		/* Player functions */
 	char getPlayerInput(Buffer *buffer);
+	std::vector<Item*> returnInventory() const { return items; }
 	int playerAttack();
 	void newItemToInventory();
 	short health, level, experience;							/* Generic propertys of player */

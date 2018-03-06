@@ -22,6 +22,6 @@ public:
 	void drawEncounter();										/* Draw encounter screen for game window */
 	void listEnemies(Enemy *enemy, short enemys);
 	void listCommands();										/* List available commands on text bar */
-	void listItems(std::vector<Item *> items);
+	void listItems(Player *player);
 	WINDOW *gameWindow, *statusWindow, *textWindow;				/* Initialize game windows */
 };

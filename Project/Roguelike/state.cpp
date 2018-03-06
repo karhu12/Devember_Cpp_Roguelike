@@ -78,6 +78,10 @@ void state::executeInput(Player *player, Map *map, Tile tile[]) {
 		status = false;
 		lastCommand = "Quit";
 	}
+	else if (cmd == 'i') {
+		buffer->listItems(player);
+		lastCommand = "Inventory";
+	}
 }
 
 

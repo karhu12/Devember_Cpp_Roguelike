@@ -120,17 +120,25 @@ void Buffer::listEnemies(Enemy *enemy, short enemys) {
 	}
 }
 
-void Buffer::listItems(std::vector<Item *> items) {
+void Buffer::listItems(Player *player) {
+	int row = 0;
+	std::vector<Item *> items = player->returnInventory();
+	wattron(textWindow, A_BOLD);
 	for (auto i : items) {
 		switch (i->getType()) {
 		case WEAPON:
-
+			mvwprintw(textWindow, row, 2, i->weapon->getWeaponType().c_str());
+			wprintw(textWindow, " | Weapon |");
 			break;
 		case CONSUMABLE:
-
+			mvwprintw(textWindow, row, 2, i->consumable->returnType().c_str());
+			wprintw(textWindow, " | Consumable |");
 			break;
 		default:
 			break;
 		}
+		row++;
 	}
+	getch();
+	wattroff(textWindow, A_BOLD);
 }

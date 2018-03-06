@@ -14,7 +14,7 @@ Player::Player() {
 	accuracy = 80;
 	xPos = 30;
 	yPos = 9;
-	itemAmount = 1;
+	itemAmount = 0;
 	mainHand = new Item(DEFAULT_WEAPON);
 	offHand = new Item(DEFAULT_WEAPON);
 	playerCharacter = 'P';
@@ -108,6 +108,5 @@ int Player::playerAttack() {
 
 void Player::newItemToInventory() {
 	Item *newItem = new Item;	/* Create new item and place it in players inventory map */
-	items[itemAmount] = newItem;
-	itemAmount++;
+	items.push_back(newItem);
 }
