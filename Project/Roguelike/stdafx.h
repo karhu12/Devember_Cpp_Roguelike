@@ -24,6 +24,7 @@
 #include <time.h>
 #include <chrono>
 #include <thread>
+#include <vector>
 
 // TODO: reference additional headers your program requires here
 #include "curses.h"

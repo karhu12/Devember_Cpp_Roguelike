@@ -18,10 +18,10 @@ state::~state() {	/* Delete pointer memory and NULL them */
 	delete mapOfLevels;
 	delete player;
 	delete buffer;
-	map = NULL;
-	mapOfLevels = NULL;
-	player = NULL;
-	buffer = NULL;
+	map = nullptr;
+	mapOfLevels = nullptr;
+	player = nullptr;
+	buffer = nullptr;
 }
 
 void state::initGame() {
@@ -47,7 +47,6 @@ void state::gameLoop() {
 		else if (tile[map->area[player->yPos][player->xPos]].tileName == "Item") {	/* If tile on player position is a tile generate new item */
 			player->newItemToInventory();
 			map->changeAreaToDefault(player->yPos, player->xPos);
-			
 		}
 		else if (lastCommand == "Movement") {							/* On player movement chance to start random encounter */
 			if (checkForEncounter()) {									/* If encounter happens */
@@ -261,4 +260,5 @@ void state::enemyEncounter(Player *player) {
 		}
 	}
 	delete enemy;											/* Delete enemy objects */
+	enemy = nullptr;
 }

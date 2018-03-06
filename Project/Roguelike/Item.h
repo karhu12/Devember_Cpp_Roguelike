@@ -19,6 +19,7 @@ public:
 	~Item();
 	Weapon *weapon;
 	Consumable *consumable;
+	int getType();
 
 private:
 	std::string type;

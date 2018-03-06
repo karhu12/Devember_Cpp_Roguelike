@@ -119,3 +119,18 @@ void Buffer::listEnemies(Enemy *enemy, short enemys) {
 		wColorOff(gameWindow, COLOR_RED, COLOR_BLACK);
 	}
 }
+
+void Buffer::listItems(std::vector<Item *> items) {
+	for (auto i : items) {
+		switch (i->getType()) {
+		case WEAPON:
+
+			break;
+		case CONSUMABLE:
+
+			break;
+		default:
+			break;
+		}
+	}
+}

@@ -18,7 +18,7 @@ Item::Item() {
 			break;
 		default:
 			break;
-}
+	}
 }
 
 Item::Item(int itemType) {
@@ -45,4 +45,16 @@ Item::Item(int itemType) {
 Item::~Item() {
 		delete weapon;
 		weapon = NULL;
+}
+
+int Item::getType() {
+	if (type == "Weapon") {
+		return WEAPON;
+	}
+	else if (type == "Consumable") {
+		return CONSUMABLE;
+	}
+	else if (type == "Spell") {
+		return SPELL;
+	}
 }

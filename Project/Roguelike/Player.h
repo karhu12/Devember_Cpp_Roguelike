@@ -29,6 +29,6 @@ public:
 
 private:
 	char input;													/* Used for player input with getch */
-	std::map<int, Item *> itemMap;
-	short items;
+	std::vector<Item *> items;
+	short itemAmount;
 };
